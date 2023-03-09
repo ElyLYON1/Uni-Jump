@@ -7,11 +7,31 @@
 
 class Carte
 {
-    unsigned int Carte_hauteur ,Carte_largeur;
+    private;
+        //dimension de la carte
+        Dimension Carte_Dimension;
+        
+        //Personnage dans la carte
+        Personnage Carte_perso;
+        
+        //Tableau dynamique de block
+        Block * Carte_TabBlock;
+        int taille_TabBlock;
 
-    Personnage Carte_perso;
+    public:
+        Carte();
+        Carte(Dimension Dimension, Personnage Perso, Block * TabBlock);
+        ~Carte();
 
-    Block * Carte_TabBlock;
+        Dimension getDimCarte() const;
+        Personnage getPerso() const;
+        Block * getTabBlock() const;
+        int getTailleTabBlock() const;
+        
+
+        void setDimension(Dimension Dimension);
+        void setPerso(Personnage Perso);
+        void setTabBlock(Block * TabBlock);
 
 
 };

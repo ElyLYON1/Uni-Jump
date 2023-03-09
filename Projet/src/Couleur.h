@@ -3,13 +3,22 @@
 
 class Couleur
 {
-private:
-    /* data */
-    unsigned char Red, Couleur_Green, Couleur_Blue;
+    private:
     
+        /* data */
+        unsigned char Red, Couleur_Green, Couleur_Blue;
+        
     public :
-     Couleur(/* args */);
-    ~Couleur();
+        Couleur(/* args */);
+        Couleur(unsigned char Red, unsigned char Green, unsigned char Blue);
+        ~Couleur();
+
+        unsigned char getRed() const;
+        unsigned char getGreen() const;
+        unsigned char getBlue() const;
+        void setRed(unsigned char Red);
+        void setGreen(unsigned char Green);
+        void setBlue(unsigned char Blue);
 };
 
 
