@@ -11,15 +11,25 @@ private:
 
 public:
     Position(/* args */) {}
-    Position(int abscisse, int ordonnee);
+
+    Position(unsigned int abscisse, unsigned int ordonnee);
+
     ~Position() {}
 
+//Accesseurs
     unsigned int getAbscisse() const;
     unsigned int getOrdonnee() const;
-    unsigned int getDistance(Position Pos) const;
+    unsigned int getDistance(const Position &Pos) const;
+
+//Mutateurs
     void setAbscisse(unsigned int abscisse);
     void setOrdonnee(unsigned int ordonnee);
-    
+
+//Surcharge d'opérateurs
+
+   Position& operator = (const Position &positon);
+
+   bool Position::operator==(const Position &p);
 };
 
 #endif /* _POSITION_H */

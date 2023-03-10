@@ -27,7 +27,10 @@ class Personnage
         unsigned int Perso_gravité;
 
     public :
-    
+
+    unsigned int getSaut()const;
+    unsigned int getGravité()const;  
+    unsigned int getVitesse()const;
 
 
 

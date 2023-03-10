@@ -10,29 +10,37 @@ using namespace std;
 
 
 //Initialisation des attributs pour Block
+//4 types de block  mobiles, statiques et les cassables (par defaut ils sont solides statique)
 Block::Block()
 {
     Block_Position = Position();
     Block_Dimension = Dimension();
     Block_Couleur = Couleur();
-    Block_Solide = false;
+    Block_Solide = true;
+    Block_mobile=false;
+
 }
 
 //Initialisation des attributs avec les paramettre en donné pour Block
 Block::Block(Position Position, Dimension Dimension, Couleur Couleur, bool Solide)
 {
-    assert(Position.getPosX() >= 0);
-    assert(Position.getPosY() >= 0);
+    //Je crois que les assertions sont inutiles car on a deja fait les verifications dans les constructeurs des classes Position, Dimension et Couleur
+
+    assert(Position.getAbscisse() >= 0);
+    assert(Position.getOrdonnee() >= 0);
     assert(Dimension.getLargeur() > 0);
     assert(Dimension.getHauteur() > 0);
     assert(Couleur.getRed() >= 0);
     assert(Couleur.getGreen() >= 0);
     assert(Couleur.getBlue() >= 0);
+
     Block_Position = Position;
     Block_Dimension = Dimension;
     Block_Couleur = Couleur;
     Block_Solide = Solide;
 }
+
+//Faire peut etre une fonction perimètre 
 
 //Destructeur de Block
 Block::~Block()
@@ -49,14 +57,15 @@ Position Block::getPosition() const
     return Block_Position;
 }
 
-//Retourne la dimension du block
-Block::getDimension() const
+
+//Retourne la dimension du bloc
+Dimension Block::getDimension() const
 {
     return Block_Dimension;
 }
 
 //Retourne la couleur du block
-Block::getCouleur() const
+Couleur Block::getCouleur() const
 {
     return Block_Couleur;
 }
@@ -70,8 +79,8 @@ bool Block::getSolide() const
 //Modifie la position du block
 void Block::setPosition(Position Position)
 {
-    assert(Position.getPosX() >= 0);
-    assert(Position.getPosY() >= 0);
+    assert(Position.getAbscisse() >= 0);
+    assert(Position.getOrdonnee() >= 0);
     Block_Position = Position;
 }
 

@@ -11,25 +11,34 @@ class Block
     
         Position Block_Position;
         Dimension Block_Dimension;
+        
         Couleur Block_Couleur;
         
         //Si c'est égal a true on peut se poser dessus. Sinon on le casse et on tombe
         bool Block_Solide;
-
+        bool Block_mobile;
     public:
 
         Block();
+
         Block(Position Position, Dimension Dimension, Couleur Couleur, bool Solide);
+
         ~Block();
 
         Position getPosition() const;
+
         Dimension getDimension() const;
+
         Couleur getCouleur() const;
+
         bool getSolide() const;
 
         void setPosition(Position Position);
+
         void setDimension(Dimension Dimension);
+
         void setCouleur(Couleur Couleur);
+
         void setSolide(bool Solide);
     
 

@@ -43,10 +43,12 @@ unsigned int Position::getOrdonnee() const
     return Pos_ordonnee;
 }
 
+
+
 //Retourne la distance entre deux positions
-unsigned int Position::getDistance(const Position &Pos) const
+unsigned int Position::getDistance(const Position &Point2) const
 {
-    return sqrt(pow(Pos_abscisse - Pos.Pos_abscisse, 2) + pow(Pos_ordonnee - Pos.Pos_ordonnee, 2));
+    return sqrt(pow(Pos_abscisse - Point2.Pos_abscisse, 2) + pow(Pos_ordonnee - Point2.Pos_ordonnee, 2));
 }
 
 //Modifie la valeur de Pos_abscisse
@@ -63,5 +65,15 @@ void Position::setOrdonnee(unsigned int ordonnee)
     this->Pos_ordonnee = ordonnee;
 }
 
+Position &Position::operator=(const Position &positon)
+{
+    this->Pos_abscisse = positon.Pos_abscisse;
+    this->Pos_ordonnee = positon.Pos_ordonnee;
 
+    return *this;
+}
 
+bool Position::operator==(const Position &p)
+{
+    return (Pos_abscisse == p.Pos_abscisse && Pos_ordonnee == p.Pos_ordonnee);
+}
