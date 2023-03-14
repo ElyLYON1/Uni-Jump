@@ -6,10 +6,10 @@ class Couleur
     private:
     
         /* data */
-        unsigned char Red, Couleur_Green, Couleur_Blue;
+        unsigned char Couleur_Red, Couleur_Green, Couleur_Blue;
         
     public :
-        Couleur(/* args */);
+        Couleur();
         Couleur(unsigned char Red, unsigned char Green, unsigned char Blue);
         ~Couleur();
 

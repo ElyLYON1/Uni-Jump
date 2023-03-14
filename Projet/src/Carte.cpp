@@ -7,24 +7,26 @@
 #include <random>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
-Carte::Carte():Carte_Dimension(),Carte_perso(),Carte_TabBlock(nullptr)
+Carte::Carte():Carte_Dimension(),Carte_perso(),Carte_TabBlock()
 {
+
 }
 
-Carte::Carte(Dimension Dim, Personnage Perso, Block *tabBlock) : Carte_Dimension(Dim), Carte_perso(Perso), Carte_TabBlock()
+Carte::Carte(Dimension Dim, Personnage Perso, std::vector<Block> tabBlock) : Carte_Dimension(Dim), Carte_perso(Perso), Carte_TabBlock(tabBlock)
 {
     //Ou je mets un if ici et en fonction de la difficulté je change les valeurs du nb de block et des proba et de la dimension de la carte
     //Ou je mets en paramètre un tableau de block qui auront deja été definis en fonctions de la difficulté donc plus besoin de nbblock ni de difficulté.
-
 
 }
 
 
 Carte::~Carte()
 {
-    delete[] Carte_TabBlock;
-}
+    Carte_Dimension = Dimension(0,0);
+    Carte_TabBlock.clear();    
+    }
 
 void Carte::setDimension(Dimension Dim)
 {
@@ -59,7 +61,7 @@ int Carte::getnbEtage()
 //Boucle for pour definir l'étage et le while pour remplir l'étage de block et le switch pour definir le type de block
 void Carte::remplirModeFacile(int difficulté)
 {
-   for(int i=0;i<=getnbEtage();i++)
+   for(int i=1;i<=getnbEtage();i++)
    {
        int nbBlockEtage = (rand() % 3) + 1;
 
@@ -67,56 +69,95 @@ void Carte::remplirModeFacile(int difficulté)
        {
            int TypeBlock = (rand() % 4) + 1;
            int TailleBlock= (rand() % 2) + 1;
-           Dimension d(Carte_Dimension.getLargeur() / 10, 1);
-
-           //Position aléatoire en largeur mais toujours sur le même étage (Vérifier la distance entre les blocks du meme etage)
 
            int abscisse = (rand() % Carte_Dimension.getLargeur());
-           Position p(abscisse, Carte_perso.getSaut()-1);
+           int ordonnee = Carte_perso.getSaut() * i;
+
+
+           // Position aléatoire  en largeur mais toujours sur le même étage (sans chevauchement)
+           if (nbBlockEtage > 1)
+           {
+               Block blockprecedent = Carte_TabBlock.back();
+               Position p(abscisse, ordonnee);
+
+               do
+               {
+
+                   int abscisse = (rand() % Carte_Dimension.getLargeur());
+
+                     p.setAbscisse(abscisse);
+
+               } while (p.getDistanceAbs(blockprecedent.getPosition()) > Carte_Dimension.getLargeur() * (30 / 100)); // Un block double fait 20% de la map donc on prend au dessus  
+
+           
+
+            // Si la valeur aléatoire est 2 c'est un block simple sinon un block double
+            //Le num de l'étage multiplié par la hauteur de chaque saut - 10% du saut pour pouvoir atterir dessus
+               Dimension d(Carte_Dimension.getLargeur() / TailleBlock * 5, i * Carte_perso.getSaut() - Carte_perso.getSaut()/10);
 
            switch (TypeBlock)
            {
 
            case 1:
-               Block b(d,p, 1, 1);
-               break;
-           case 2:
-               Block b(d,p, 1, 0);
-               break;
-           case 3:
-               Block b(d,p, 0, 1);
-               break;
-           case 4:
-               Block b(d,p, 0,0);
-               break;
+           {
+               Block b1(d,p, 1, 1);
+               Carte_TabBlock.push_back(b1);
 
+               break;
+           }
+           case 2:
+           {
+               Block b2(d,p, 1, 0);
+               Carte_TabBlock.push_back(b2);
+
+               break;
+           }
+           case 3:
+           {
+               Block b3(d,p, 0, 1);
+               Carte_TabBlock.push_back(b3);
+
+               break;
+           }
+           case 4:
+           {
+               Block b4(d,p, 0,0);
+               Carte_TabBlock.push_back(b4);
+
+               break;
            }
 
+            default:
+            {
 
-           Dimension d (Carte_Dimension.getLargeur()/10, 1);
+            Block b1,b2,b3,b4;
 
-           b.setDimension(d);
-
-            Carte_TabBlock.push_back(b);
-        
-  
+            }
 
 
 
-
-
+           }
+           }
            nbBlockEtage--;
 
-        } while (nbBlockEtage != 0)
 
-   }
+        } while (nbBlockEtage != 0);
 
+   
 
 
 }
 
-void Carte::viderTabBlock()
+}
+
+bool Carte::PersoSurBlock()
 {
+    for (int i = 0; i < Carte_TabBlock.size(); i++)
+    {
+        if(Carte_perso.getPosition()==Carte_TabBlock[i].getPosition())
+        return true;
+    }
+    return false;
 
 }
 
@@ -130,10 +171,6 @@ Personnage Carte::getPerso() const
     return Carte_perso;
 }
 
-Block *Carte::getTabBlock() const
-{
-    return nullptr;
-}
 
 Block Carte::getBlock(int numBlock) const
 {
@@ -143,12 +180,12 @@ Block Carte::getBlock(int numBlock) const
 int Carte::getTailleTabBlock() const
 {
   //  sizeof(Carte_TabBlock) / sizeof(Carte_TabBlock[0]);
-    return Carte_taille_TabBlock;
+    return Carte_TabBlock.size();
 }
 
 int Carte::getTailleUtilisee() const
 {
-    if(sizeof(Carte_TabBlock=!0))
+    if(getTailleTabBlock()!=0)
 {
     return sizeof(Carte_TabBlock) / sizeof(Carte_TabBlock[0]);
 
@@ -157,5 +194,6 @@ else
 {
     return 0;
 }
+
 }
 

@@ -11,7 +11,7 @@ class Block
     
         Position Block_Position;
         Dimension Block_Dimension;
-        
+
         Couleur Block_Couleur;
         
         //Si c'est égal a true on peut se poser dessus. Sinon on le casse et on tombe
@@ -21,7 +21,13 @@ class Block
 
         Block();
 
-        Block(Position Position, Dimension Dimension, Couleur Couleur, bool Solide);
+        /// @brief Constructeur de block initialisé avec les paramètre en donnée de couleur noir
+        /// @param Pos 
+        /// @param Dim 
+        /// @param Coul 
+        /// @param Solide 
+        /// @param mobile 
+        Block(Dimension Dim, Position Pos, bool Solide, bool mobile);
 
         ~Block();
 
@@ -41,7 +47,6 @@ class Block
 
         void setSolide(bool Solide);
     
-
 
 
 };

@@ -20,8 +20,9 @@ public:
     unsigned int getAbscisse() const;
     unsigned int getOrdonnee() const;
     unsigned int getDistance(const Position &Pos) const;
+    unsigned int getDistanceAbs(const Position &Point2) const;
 
-//Mutateurs
+    // Mutateurs
     void setAbscisse(unsigned int abscisse);
     void setOrdonnee(unsigned int ordonnee);
 

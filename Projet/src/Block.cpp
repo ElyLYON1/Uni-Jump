@@ -22,9 +22,9 @@ Block::Block()
 }
 
 //Initialisation des attributs avec les paramettre en donné pour Block
-Block::Block(Position Position, Dimension Dimension, Couleur Couleur, bool Solide)
+Block::Block(Dimension Dim, Position Pos, bool Solide,bool Mobile):Block_Position(Pos),Block_Dimension(Dim),Block_Couleur(),Block_Solide(Solide),Block_mobile(Mobile)
 {
-    //Je crois que les assertions sont inutiles car on a deja fait les verifications dans les constructeurs des classes Position, Dimension et Couleur
+    /*Je crois que les assertions sont inutiles car on a deja fait les verifications dans les constructeurs des classes Position, Dimension et Couleur
 
     assert(Position.getAbscisse() >= 0);
     assert(Position.getOrdonnee() >= 0);
@@ -34,11 +34,9 @@ Block::Block(Position Position, Dimension Dimension, Couleur Couleur, bool Solid
     assert(Couleur.getGreen() >= 0);
     assert(Couleur.getBlue() >= 0);
 
-    Block_Position = Position;
-    Block_Dimension = Dimension;
-    Block_Couleur = Couleur;
-    Block_Solide = Solide;
+*/
 }
+  
 
 //Faire peut etre une fonction perimètre 
 
@@ -71,10 +69,7 @@ Couleur Block::getCouleur() const
 }
 
 //Retourne la valeur de solide
-bool Block::getSolide() const
-{
-    return Block_Solide;
-}
+bool Block::getSolide() const {  return Block_Solide; }
 
 //Modifie la position du block
 void Block::setPosition(Position Position)
