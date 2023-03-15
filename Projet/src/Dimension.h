@@ -1,6 +1,7 @@
 #ifndef _DIMENSION_H
 #define _DIMENSION_H
 
+
 class Dimension
 {
     private:
@@ -8,9 +9,9 @@ class Dimension
         unsigned int Dim_Largeur,Dim_Hauteur;
 
     public:
-        Dimension(){};
+        Dimension();
         Dimension(unsigned int Largeur, unsigned int Hauteur);
-        ~Dimension() {};
+        ~Dimension();
 
         unsigned int getLargeur() const;
         unsigned int getHauteur() const;

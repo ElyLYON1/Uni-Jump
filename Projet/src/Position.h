@@ -10,11 +10,11 @@ private:
 
 
 public:
-    Position(/* args */) {}
+    Position(/* args */);
 
     Position(unsigned int abscisse, unsigned int ordonnee);
 
-    ~Position() {}
+    ~Position();
 
 //Accesseurs
     unsigned int getAbscisse() const;
@@ -30,7 +30,7 @@ public:
 
    Position& operator = (const Position &positon);
 
-   bool Position::operator==(const Position &p);
+   bool operator ==(const Position &p);
 };
 
 #endif /* _POSITION_H */

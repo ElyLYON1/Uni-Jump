@@ -2,6 +2,7 @@
 #define _CARTE_H
 #include "Personnage.h"
 #include "Block.h"
+
 #include <vector>
 
 
@@ -24,13 +25,19 @@ class Carte
         Carte();
         Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
 
+        ~Carte();
+
         Dimension getDimCarte() const;
         Personnage getPerso() const;
         Block getBlock(int numBlock)const;
+        std::vector<Block> getTabBlock() const;
 
         int getTailleTabBlock() const;
         int getTailleUtilisee() const;
-        
+
+        void remplirTabBlockTxt();
+
+        bool blockSurPos(int x, int y)const;
 
         void setDimension(Dimension Dimension);
         void setPerso(Personnage Perso);
@@ -39,6 +46,7 @@ class Carte
         void remplirModeFacile(int difficulté);
 
         bool PersoSurBlock();
+        void actionClavier(const char touche);
 };
 
 #endif /* _CARTE_H */

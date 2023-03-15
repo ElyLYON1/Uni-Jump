@@ -1,8 +1,4 @@
 #include "Carte.h"
-#include "Personnage.h"
-#include "Block.h"
-#include "Dimension.h"
-#include "Position.h"
 #include <ctime>
 #include <random>
 #include <stdlib.h>
@@ -152,7 +148,7 @@ void Carte::remplirModeFacile(int difficulté)
 
 bool Carte::PersoSurBlock()
 {
-    for (int i = 0; i < Carte_TabBlock.size(); i++)
+    for (long unsigned int i = 0; i < Carte_TabBlock.size(); i++)
     {
         if(Carte_perso.getPosition()==Carte_TabBlock[i].getPosition())
         return true;
@@ -160,6 +156,33 @@ bool Carte::PersoSurBlock()
     return false;
 
 }
+
+void Carte::actionClavier (const char touche)
+ {
+	switch(touche) 
+    {
+		case 'g' :
+				Carte_perso.perso_versGauche();
+				break;
+		case 'd' :
+				Carte_perso.perso_versDroite();
+				break;
+		case 's' :
+				Carte_perso.perso_sauter();
+				break;
+	
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 Dimension Carte::getDimCarte() const
 {
@@ -175,6 +198,11 @@ Personnage Carte::getPerso() const
 Block Carte::getBlock(int numBlock) const
 {
     return Carte_TabBlock[numBlock];
+}
+
+std::vector<Block> Carte::getTabBlock() const
+{
+    return std::vector<Block>();
 }
 
 int Carte::getTailleTabBlock() const
@@ -197,3 +225,34 @@ else
 
 }
 
+/*
+Fonction simplifié du remplissage des blocks pout l'affichage txt
+
+void Carte::remplirTabBlockTxt () 
+{
+    for(int i=1;i<=getnbEtage();i++)
+    {
+        int nbBlockEtage = (rand() % 3) + 1;
+}
+}
+
+*/
+
+bool Carte::blockSurPos(int x ,int y)const
+{
+    Position p(x,y);
+
+    for (long unsigned int i = 0; i < Carte_TabBlock.size(); i++)
+        {
+            if(Carte_TabBlock[i].getPosition()==p)
+            {
+            return  true;
+            }
+
+        }
+             
+            
+                return false ;
+            
+
+}
