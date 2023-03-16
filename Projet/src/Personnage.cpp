@@ -16,7 +16,7 @@ Personnage::Personnage()
     Perso_Position = Position();
     Perso_Dim = Dimension();
     Perso_Vie = false;
-    nbPixelParCarreau = 0;
+    nbPixelParCarreau = 1;
     Perso_Saute = 0;
 }
 

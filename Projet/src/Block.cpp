@@ -21,6 +21,14 @@ Block::Block()
 
 }
 
+Block::Block(Position Pos):Block_Position(Pos),Block_Dimension(),Block_Couleur(),Block_Solide(true),Block_mobile(false)
+{
+}
+
+Block::Block(bool solide, bool mobile):Block_Position(),Block_Dimension(),Block_Couleur(),Block_Solide(solide),Block_mobile(mobile)
+{
+}
+
 //Initialisation des attributs avec les paramettre en donné pour Block
 Block::Block(Dimension Dim, Position Pos, bool Solide,bool Mobile):Block_Position(Pos),Block_Dimension(Dim),Block_Couleur(),Block_Solide(Solide),Block_mobile(Mobile)
 {

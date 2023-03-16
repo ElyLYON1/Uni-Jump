@@ -20,6 +20,9 @@ class Block
     public:
 
         Block();
+        Block(Position Pos);
+        Block(bool solide,bool mobile);
+
 
         /// @brief Constructeur de block initialisé avec les paramètre en donnée de couleur noir
         /// @param Pos 

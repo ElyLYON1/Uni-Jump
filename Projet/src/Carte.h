@@ -47,6 +47,7 @@ class Carte
 
         bool PersoSurBlock();
         void actionClavier(const char touche);
+
 };
 
 #endif /* _CARTE_H */

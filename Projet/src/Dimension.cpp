@@ -8,8 +8,8 @@ using namespace std;
 //Initailisation des attributs pour Dimension
 Dimension::Dimension()
 {
-    Dim_Largeur = 0;
-    Dim_Hauteur = 0;
+    Dim_Largeur = 1;
+    Dim_Hauteur = 1;
 }
 
 //Initialisation des attributs avec les paramettre en donné pour Dimension
