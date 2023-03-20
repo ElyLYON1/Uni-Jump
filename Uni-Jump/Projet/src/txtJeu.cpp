@@ -22,17 +22,17 @@ void txtAff(WinTXT &win, const Carte &UneCarte)
         for (unsigned int y = 0; y < UneCarte.getDimCarte().getHauteur(); ++y)
             if(UneCarte.blockSurPos(x,y)==true)
             {
-                win.print(x, y, '_');
+                win.print(x, UneCarte.getDimCarte().getHauteur() - y, '_');
             }
             else
             {
-                win.print(x, y, ' ');
+                win.print(x, UneCarte.getDimCarte().getHauteur()- y, ' ');
             }
 
 
 
     // Affichage de Pacman
-    win.print(PersoAff.getPosition().getAbscisse(),PersoAff.getPosition().getOrdonnee(), 'P');
+    win.print( PersoAff.getPosition().getAbscisse(), UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(), 'P');
     // Affichage du Fantome
 
     win.draw();

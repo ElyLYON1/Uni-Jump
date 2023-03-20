@@ -14,11 +14,17 @@ int main(int argc, char **argv)
     Dimension UneDimension(10, 20);
     Personnage UnPersonnage;
     UnPersonnage.setPosition(Position(2, 1));
+    UnPersonnage.setSaut(3);
     std::vector<Block> UnTabBlock;
     UnTabBlock.push_back(unblock);
     UnTabBlock.push_back(unblock2);
 
-    Carte UneDcarte(UneDimension, UnPersonnage, UnTabBlock);
+    Carte UneDcarte;
+    UneDcarte.setDimension(UneDimension);
+    UneDcarte.setPerso(UnPersonnage); 
+    UneDcarte.Block_PersoInit1();
+    UneDcarte.Block_Init2();
+    
     txtBoucle(UneDcarte);
 
     termClear();

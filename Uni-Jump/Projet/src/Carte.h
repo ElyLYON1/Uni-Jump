@@ -38,15 +38,24 @@ class Carte
         void remplirTabBlockTxt();
 
         bool blockSurPos(int x, int y)const;
+        void setBlock(int numBlock, Block b);
+        void ajouterBlock(Block b);
 
         void setDimension(Dimension Dimension);
         void setPerso(Personnage Perso);
+
 
         int getnbEtage();
         void remplirModeFacile(int difficulté);
 
         bool PersoSurBlock();
         void actionClavier(const char touche);
+
+        void Block_PersoInit1();
+        void Block_Init2();
+
+        void PersoGravite();
+        bool persoSurBlock2();
 
 };
 

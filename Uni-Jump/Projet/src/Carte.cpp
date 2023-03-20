@@ -1,4 +1,7 @@
 #include "Carte.h"
+#include "Personnage.h"
+#include "Position.h"
+#include "Block.h"
 #include <ctime>
 #include <random>
 #include <stdlib.h>
@@ -162,7 +165,8 @@ bool Carte::PersoSurBlock()
 
 void Carte::actionClavier (const char touche)
  {
-	switch(touche) 
+	unsigned int i=0;
+    switch(touche) 
     {
 		case 'g' :
 				Carte_perso.perso_versGauche();
@@ -170,6 +174,7 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
+                
 				break;
 		case 'd' :
 				Carte_perso.perso_versDroite();
@@ -184,15 +189,65 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setOrdonnee(0);
                 }
+                i++;
+                if (i == Carte_perso.getSaut())
+                {
+                    for(unsigned int j=0; j<Carte_perso.getPosition().getOrdonnee(); j++)
+                    {
+                        PersoGravite();
+                    }
+                }
 				break;
 	
     }
+}
+
+void Carte::PersoGravite()
+{
+    if(persoSurBlock2()==false)
+    {
+        Carte_perso.setOrdonnee(Carte_perso.getPosition().getOrdonnee() - 1);
+    }
+}
+
+bool Carte::persoSurBlock2(){
+    int i = Carte_perso.getPosition().getOrdonnee();
+    int j = Carte_perso.getPosition().getAbscisse();
+    return blockSurPos(j,i);
 }
 
 
 
 
 
+//fonction qui place le personage sur le premier block avec ordonnèe 2 dans la carte
+void Carte::Block_PersoInit1()
+{
+    int abscisse = (rand() % Carte_Dimension.getLargeur());
+    int ordonnee = 2;
+    Position pos1(abscisse, ordonnee);
+    Carte_perso.setPosition(pos1);
+    Block b(pos1);
+    ajouterBlock(b);
+
+}
+
+//fonction qui place le block sur la carte
+void Carte::Block_Init2()
+{
+    int i = 0;
+    int saut = Carte_perso.getSaut();
+    int maxLargeur = Carte_Dimension.getLargeur();
+    while (getBlock(i).getPosition().getOrdonnee() <= Carte_Dimension.getHauteur() - 3 ){
+        int abscisse = (rand() % maxLargeur);
+        int ordonnee = getBlock(i).getPosition().getOrdonnee() + rand() % (saut - 1 ) +1;
+        Position pos1(abscisse, ordonnee);
+        Block b(pos1);
+        ajouterBlock(b);
+        i++;
+    }
+
+}
 
 
 
@@ -270,4 +325,21 @@ bool Carte::blockSurPos(int x ,int y)const
                 return false ;
             
 
+}
+
+//fonction qui remplace le block sur la carte
+void Carte::setBlock(int numBlock, Block b)
+{
+    if( numBlock < getTailleTabBlock()){
+        Carte_TabBlock[numBlock] = b;
+    }
+    else    {
+        std::cout << "Erreur : le numéro de block est trop grand" << std::endl;
+    }    
+}
+
+//fonction qui ajoute un block à la carte
+void Carte::ajouterBlock(Block b)
+{
+    Carte_TabBlock.push_back(b);
 }
