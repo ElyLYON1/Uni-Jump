@@ -52,7 +52,8 @@ val:
 	valgrind -v --leak-check=full --show-reachable=yes ./bin/affichagetxt
 
 
-
+txt:
+	./bin/affichagetxt
 
 clean:
 	rm -f  ./obj/* ./bin/*

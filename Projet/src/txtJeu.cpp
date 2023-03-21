@@ -6,6 +6,7 @@
 #endif // WIN32
 #include "WinTxt.h"
 
+
 #include "Carte.h"
 
 void txtAff(WinTXT &win, const Carte &UneCarte)
@@ -21,17 +22,35 @@ void txtAff(WinTXT &win, const Carte &UneCarte)
         for (unsigned int y = 0; y < UneCarte.getDimCarte().getHauteur(); ++y)
             if(UneCarte.blockSurPos(x,y)==true)
             {
-                win.print(x, y, '_');
+                win.print(x, UneCarte.getDimCarte().getHauteur() - y, '_');
             }
             else
             {
-                win.print(x, y, ' ');
+                win.print(x, UneCarte.getDimCarte().getHauteur()- y, ' ');
             }
 
+    //affichage des limites de la carte
+    for(unsigned int i = 0; i<= UneCarte.getDimCarte().getLargeur(); i++)
+    {
+        for (unsigned int j = 0; j<=UneCarte.getDimCarte().getHauteur(); j++)
+        {
+            if (i==0 ){
+                win.print(i,j,'*');
+            }
+            if (i==UneCarte.getDimCarte().getLargeur()){
+                win.print(i,j,'*');
+            }
+            if (j==UneCarte.getDimCarte().getHauteur())
+            {
+                win.print(i,j,'*');
+            }
+        }
+        
+    }
 
 
     // Affichage de Pacman
-    win.print(PersoAff.getPosition().getAbscisse(),PersoAff.getPosition().getOrdonnee(), 'P');
+    win.print( PersoAff.getPosition().getAbscisse(), UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(), 'P');
     // Affichage du Fantome
 
     win.draw();
@@ -46,7 +65,7 @@ void txtBoucle(Carte &UneCarte)
     Dimension dimcarte=UneCarte.getDimCarte();
     // Creation d'une nouvelle fenetre en mode texte
     // => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
-    WinTXT win(dimcarte.getLargeur(), dimcarte.getHauteur());
+    WinTXT win(dimcarte.getLargeur()+1, dimcarte.getHauteur()+1);
 
     bool ok = true;
     int c;
@@ -72,7 +91,7 @@ void txtBoucle(Carte &UneCarte)
         case 'e':
             UneCarte.actionClavier('d');
             break;
-        case 'z':
+        case ' ':
             UneCarte.actionClavier('s');
             break;
         case 'q':
