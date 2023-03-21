@@ -157,14 +157,16 @@ void Personnage::perso_versDroite()
 // Fonction qui permet de faire sauter le personnage
 void Personnage::perso_sauter()
 { 
-        unsigned int i;
-    for(i=0;i<Perso_Saute;i++)
-    {
-        Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + 1);
-        usleep(500000);
+     //   unsigned int i;
+    //for(i=0;i<Perso_Saute;i++)
+    //{
+    Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + 1);
+    //    usleep(500000);
 
-    }
+    //}
 }
+
+
 // Fonction qui permet de faire tomber le personnage
 void Personnage::perso_tomber()
 {

@@ -188,27 +188,36 @@ void Carte::actionClavier (const char touche)
                 boucleJeu();
 				break;
 		case 's' :
-				Carte_perso.perso_sauter();
-                if ((Carte_perso.getPosition().getOrdonnee() +1) > Carte_Dimension.getHauteur())
+				
+                //fonction pour faire redesendre le personage
+                if (nbSautmax % (Carte_perso.getSaut() +1) == Carte_perso.getSaut())
                 {
-                    Carte_perso.setOrdonnee(0);
+                    while (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() >= 1)
+                    {
+                        PersoGravite();
+                    }
+                    
+                }
+                else
+                {
+                    Carte_perso.perso_sauter();
+                    if ((Carte_perso.getPosition().getOrdonnee() +1) > Carte_Dimension.getHauteur())
+                    {
+                        Carte_perso.setOrdonnee(0);
+                    }
                 }
                 boucleJeu();
-                for(unsigned int j=0; j<=Carte_perso.getPosition().getOrdonnee(); j++)
-                    {
-                        PersoGravite();
-                    }
-                nbSautmax++;
-                if (nbSautmax%(Carte_perso.getSaut()) == Carte_perso.getSaut())
-                {
-                    for(unsigned int j=0; j<Carte_perso.getPosition().getOrdonnee(); j++)
-                    {
-                        PersoGravite();
-                    }
-                }
 				break;
 	
     }
+}
+
+unsigned int Carte::getnbSaut() const{
+    return nbSautmax;
+}
+
+void Carte::ajouteSaut(){
+    nbSautmax++;
 }
 
 void Carte::PersoGravite()

@@ -55,8 +55,11 @@ class Carte
         void Block_PersoInit1();
         void Block_Init2();
 
+        unsigned int getnbSaut() const;
+        void ajouteSaut();
         void PersoGravite();
         bool persoSurBlock2();
+        
 
 
         void testRegression();

@@ -52,6 +52,7 @@ void txtAff(WinTXT &win, const Carte &UneCarte)
     // Affichage de Pacman
     win.print( PersoAff.getPosition().getAbscisse(), UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(), 'P');
     // Affichage du Fantome
+    
 
     win.draw();
 }
@@ -93,6 +94,7 @@ void txtBoucle(Carte &UneCarte)
             break;
         case ' ':
             UneCarte.actionClavier('s');
+            UneCarte.ajouteSaut();
             break;
         case 'q':
             ok = false;
