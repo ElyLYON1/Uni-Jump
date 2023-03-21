@@ -57,6 +57,9 @@ class Carte
         void PersoGravite();
         bool persoSurBlock2();
 
+
+        void testRegression();
+
 };
 
 #endif /* _CARTE_H */
