@@ -19,9 +19,10 @@ class Carte
         //Tableau dynamique de block
        std::vector<Block>  Carte_TabBlock;
        // int Carte_taille_TabBlock;
-
-
+        unsigned int nbSautmax;
+    
     public:
+        
         Carte();
         Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
 
@@ -59,6 +60,10 @@ class Carte
 
 
         void testRegression();
+
+
+        void boucleJeu();
+        void tout_deplacer();
 
 };
 

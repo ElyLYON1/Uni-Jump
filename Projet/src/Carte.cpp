@@ -11,6 +11,8 @@
 #include <cassert>
 using namespace std;
 
+
+
 Carte::Carte():Carte_Dimension(),Carte_perso(),Carte_TabBlock()
 {
 
@@ -165,7 +167,7 @@ bool Carte::PersoSurBlock()
 
 void Carte::actionClavier (const char touche)
  {
-	unsigned int i=0;
+	
     switch(touche) 
     {
 		case 'g' :
@@ -174,6 +176,7 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
+                boucleJeu();
                 
 				break;
 		case 'd' :
@@ -182,6 +185,7 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(1);
                 }
+                boucleJeu();
 				break;
 		case 's' :
 				Carte_perso.perso_sauter();
@@ -189,8 +193,13 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setOrdonnee(0);
                 }
-                i++;
-                if (i%(Carte_perso.getSaut()) == Carte_perso.getSaut())
+                boucleJeu();
+                for(unsigned int j=0; j<=Carte_perso.getPosition().getOrdonnee(); j++)
+                    {
+                        PersoGravite();
+                    }
+                nbSautmax++;
+                if (nbSautmax%(Carte_perso.getSaut()) == Carte_perso.getSaut())
                 {
                     for(unsigned int j=0; j<Carte_perso.getPosition().getOrdonnee(); j++)
                     {
@@ -236,13 +245,13 @@ void Carte::Block_PersoInit1()
     Carte_perso.setPosition(pos1);
     Block b(pos1);
     ajouterBlock(b);
-
+    nbSautmax = 0;
 }
 
 //fonction qui place le block sur la carte
 void Carte::Block_Init2()
 {
-    int i = 0;
+    int i = Carte_TabBlock.size()-1;
     int saut = Carte_perso.getSaut();
     int maxLargeur = Carte_Dimension.getLargeur();
     while (getBlock(i).getPosition().getOrdonnee() <= Carte_Dimension.getHauteur() - 3 ){
@@ -349,4 +358,48 @@ void Carte::setBlock(int numBlock, Block b)
 void Carte::ajouterBlock(Block b)
 {
     Carte_TabBlock.push_back(b);
+}
+
+void Carte::testRegression()
+{
+    Carte c1;
+    Dimension d1(100,100);
+    assert(c1.getDimCarte().getLargeur()==0);
+    assert(c1.getDimCarte().getHauteur()==0);
+
+    assert(c1.getTailleTabBlock()==0);
+    assert(c1.getPerso().getPosition().getAbscisse()==0);
+    assert(c1.getPerso().getPosition().getOrdonnee()==0);
+
+    c1.setDimension(d1);
+    assert(c1.getDimCarte().getLargeur()==100);
+    assert(c1.getDimCarte().getHauteur()==100);
+
+    c1.actionClavier('g');
+    assert(c1.getPerso().getPosition().getAbscisse()==c1.getDimCarte().getLargeur()-1);
+
+    c1.actionClavier('d');
+    assert(c1.getPerso().getPosition().getAbscisse()==1);
+    
+}
+
+
+void Carte::boucleJeu(){
+    if (persoSurBlock2()==true)
+    {
+        tout_deplacer();
+        Block_Init2();
+    }
+}
+
+void Carte::tout_deplacer()
+{
+    const int positionordonee = 2;
+    int difference = Carte_perso.getPosition().getOrdonnee()-positionordonee;
+    for(int i=0; i<getTailleTabBlock();i++){
+        Position pos = Carte_TabBlock[i].getPosition();
+        pos.setOrdonnee(pos.getOrdonnee()-difference);
+        Carte_TabBlock[i].setPosition(pos);
+    }
+    Carte_perso.setOrdonnee(positionordonee);
 }

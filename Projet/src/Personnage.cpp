@@ -5,6 +5,7 @@
 
 #include <cassert>
 
+#include <unistd.h>
 #include <cstring>
 #include <iostream>
 using namespace std;
@@ -155,10 +156,15 @@ void Personnage::perso_versDroite()
 
 // Fonction qui permet de faire sauter le personnage
 void Personnage::perso_sauter()
-{
-    Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + nbPixelParCarreau);
-}
+{ 
+        unsigned int i;
+    for(i=0;i<Perso_Saute;i++)
+    {
+        Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + 1);
+        usleep(500000);
 
+    }
+}
 // Fonction qui permet de faire tomber le personnage
 void Personnage::perso_tomber()
 {
