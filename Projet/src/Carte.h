@@ -5,15 +5,16 @@
 
 #include <vector>
 
-
+/**
+ * @class Carte [Carte.hpp].
+ * @brief 'Carte' Regroupe toutes les caractéristiques d'une carte de jeu (The background of the game).
+*/
 class Carte
 {
 
     private:
-        //dimension de la carte
         Dimension Carte_Dimension;
         
-        //Personnage dans la carte
         Personnage Carte_perso;
         
         //Tableau dynamique de block
@@ -22,10 +23,12 @@ class Carte
         unsigned int nbSautmax;
     
     public:
-        
+
+      /// @brief Le constructeur de la class 'Carte'.  
         Carte();
         Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
 
+    ///@brief Le destructeur de la class 'Carte'. 
         ~Carte();
 
         Dimension getDimCarte() const;
@@ -63,7 +66,6 @@ class Carte
 
 
         void testRegression();
-
 
         void boucleJeu();
         void tout_deplacer();
