@@ -1,9 +1,10 @@
 CC= g++
 FLAGS = -g -Wall -c
-INCLUDE_DIR_SDL = #-I/usr/include/SDL2
+INCLUDE_DIR_SDL =-I/usr/include/SDL2
 LIBS_SDL = -lSDL2 -lSDL2_ttf -lSDL2_image
-EXE = bin/affichagetxt 
-CORPS= obj/Couleur.o obj/Dimension.o obj/Position.o obj/Personnage.o obj/Block.o obj/Carte.o obj/WinTxt.o obj/txtJeu.o obj/main.o
+EXE = bin/affichagetxt bin/affichageSDL
+CORPS= obj/Couleur.o obj/Dimension.o obj/Position.o obj/Personnage.o obj/Block.o obj/Carte.o obj/WinTxt.o obj/txtJeu.o obj/main.o obj/sdlclasse.o obj/sdlmain.o
+CORPSH= obj/Couleur.h obj/Dimension.h obj/Position.h obj/Personnage.h obj/Block.h obj/Carte.h obj/WinTxt.h obj/txtJeu.o obj/main.o obj/sdlclasse.h
 
 #a faire
 
@@ -48,12 +49,19 @@ obj/WinTxt.o : src/WinTxt.h src/WinTxt.cpp
 obj/txtJeu.o : src/txtJeu.h src/txtJeu.cpp
 	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/txtJeu.cpp -o obj/txtJeu.o $(LIBS_SDL)
 
+obj/sdlclasse.o : src/sdlclasse.h src/sdlclasse.cpp
+	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/sdlclasse.cpp -o obj/sdlclasse.o $(LIBS_SDL)
+
+obj/sdlmain.o : src/sdlmain.cpp
+	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/sdlmain.cpp -o obj/sdlmain.o $(LIBS_SDL)
+
+	
 val:
-	valgrind -v --leak-check=full --show-reachable=yes ./bin/affichagetxt
+	valgrind --tool=memcheck --leak-check=full  ./bin/affichagetxt
 
 
-txt:
-	./bin/affichagetxt
+git:
+	git add/src*
 
 clean:
 	rm -f  ./obj/* ./bin/*
