@@ -1,6 +1,6 @@
 #include <cassert>
 #include <time.h>
-#include "../sdlJeu.h"
+#include "../SDL/sdl.h"
 #include <stdlib.h>
 
 #include <iostream>
