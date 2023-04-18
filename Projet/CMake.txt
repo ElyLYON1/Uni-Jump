@@ -1,0 +1,41 @@
+#On n'autorise l'utilisation qu'à partir de la version 3.22.1.
+cmake_minimum_required(VERSION 3.22.1)
+
+#Le nom de projet.
+project (Uni-Jump)
+
+#Les fichiers d'en-têtes.
+
+set(HEADER
+    Carte.h 
+    Couleur.h 
+    Dimension.h 
+    Objet.h 
+    Partie.h 
+    Personnage.h 
+    Position.h 
+    txtJeu.h 
+    WinTxt.h 
+    )
+
+    #Les fichiers sources
+
+    set(SOURCES 
+        Carte.cpp
+        Couleur.cpp 
+        Dimension.cpp 
+        Objet.cpp 
+        Partie.cpp 
+        Personnage.cpp 
+        Position.cpp 
+        txtJeu.cpp 
+        WinTxt.cpp 
+        main.cpp 
+    )
+    #C++ 11
+    set(CMAKE_CXX_STANDARD 11)
+
+    #On veut un executable compilé à partir des fichiers décrits par HEADERS et SOURCES. 
+    add_executable (Unit-Jump ${SOURCES} ${HEADERS})
+
+    
