@@ -176,14 +176,29 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
+                if (nbSautmax % (Carte_perso.getSaut() +1) == 0)
+                {
+                    while (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() >= 1)
+                    {
+                        PersoGravite();
+                    }
+                    
+                }
                 boucleJeu();
-                
 				break;
 		case 'd' :
 				Carte_perso.perso_versDroite();
                 if (Carte_perso.getPosition().getAbscisse() >= Carte_Dimension.getLargeur())
                 {
                     Carte_perso.setAbscisse(1);
+                }
+                if (nbSautmax % (Carte_perso.getSaut() +1) == 0)
+                {
+                    while (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() >= 1)
+                    {
+                        PersoGravite();
+                    }
+                    
                 }
                 boucleJeu();
 				break;
@@ -398,6 +413,7 @@ void Carte::boucleJeu(){
     {
         tout_deplacer();
         Block_Init2();
+        viePerdue();
     }
 }
 
@@ -411,4 +427,19 @@ void Carte::tout_deplacer()
         Carte_TabBlock[i].setPosition(pos);
     }
     Carte_perso.setOrdonnee(positionordonee);
+}
+
+void Carte::viePerdue(){
+    if (Carte_perso.getPosition().getOrdonnee() == 1){
+        Carte_perso.setVie(false);
+    }
+}
+
+bool Carte::getViePerso(){
+    if (Carte_perso.getVie() == true){
+        return true;
+    }
+    else{
+        return false;
+    }
 }

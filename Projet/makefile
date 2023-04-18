@@ -1,67 +1,66 @@
-CC= g++
-FLAGS = -g -Wall -c
-INCLUDE_DIR_SDL =-I/usr/include/SDL2
-LIBS_SDL = -lSDL2 -lSDL2_ttf -lSDL2_image
-EXE = bin/affichagetxt bin/affichageSDL
-CORPS= obj/Couleur.o obj/Dimension.o obj/Position.o obj/Personnage.o obj/Block.o obj/Carte.o obj/WinTxt.o obj/txtJeu.o obj/main.o obj/sdlclasse.o obj/sdlmain.o
-CORPSH= obj/Couleur.h obj/Dimension.h obj/Position.h obj/Personnage.h obj/Block.h obj/Carte.h obj/WinTxt.h obj/txtJeu.o obj/main.o obj/sdlclasse.h
-
-#a faire
-
-all : $(EXE)
-
-$(EXE) : $(CORPS)
-	$(CC)$(INCLUDE_DIR_SDL) $(CORPS) -o $(EXE)
 
 
-obj/Carte.o : src/Carte.h src/Carte.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Carte.cpp -o obj/Carte.o $(LIBS_SDL)
+CORE = Couleur.cpp Dimension.cpp Position.cpp Personnage.cpp Block.cpp Carte.cpp
 
+SRCS_TXT = $(CORE) txtJeu.cpp WinTxt.cpp main_txt.cpp
+FINAL_TARGET_TXT = affichagetxt
+#DEFINE_TXT = -DJEU_TXT
 
-obj/Couleur.o : src/Couleur.h src/Couleur.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Couleur.cpp -o obj/Couleur.o $(LIBS_SDL)
+SRCS_SDL = $(CORE) sdlclasse.cpp main_sdl.cpp
+FINAL_TARGET_SDL = affichagesdl
+#DEFINE_SDL = -DJEU_SDL
 
+ifeq ($(OS),Windows_NT)
+	INCLUDE_DIR_SDL = 	-Isrc/SDL2 \
+                        -Iextern/SDL2_mingw-cb20/SDL2-2.0.12/x86_64-w64-mingw32/include/SDL2 \
+						-Iextern/SDL2_mingw-cb20/SDL2_ttf-2.0.15/x86_64-w64-mingw32/include/SDL2 \
+						-Iextern/SDL2_mingw-cb20/SDL2_image-2.0.5/x86_64-w64-mingw32/include/SDL2 \
+						-Iextern/SDL2_mingw-cb20/SDL2_mixer-2.0.4/x86_64-w64-mingw32/include/SDL2
 
-obj/main.o : src/Block.h src/Carte.h src/Couleur.h src/Dimension.h src/Personnage.h src/Position.h src/main.cpp 
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/main.cpp -o obj/main.o $(LIBS_SDL)
+	LIBS_SDL = -Lextern \
+			-Lextern/SDL2_mingw-cb20/SDL2-2.0.12/x86_64-w64-mingw32/lib \
+			-Lextern/SDL2_mingw-cb20/SDL2_ttf-2.0.15/x86_64-w64-mingw32/lib \
+			-Lextern/SDL2_mingw-cb20/SDL2_image-2.0.5/x86_64-w64-mingw32/lib \
+			-Lextern/SDL2_mingw-cb20/SDL2_mixer-2.0.4/x86_64-w64-mingw32/lib \
+			-lmingw32 -lSDL2main -lSDL2.dll -lSDL2_ttf.dll -lSDL2_image.dll -lSDL2_mixer.dll
 
+else
+	INCLUDE_DIR_SDL = -I/usr/include/SDL2
+	LIBS_SDL = -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer -lGL
+endif
 
-obj/Block.o : src/Block.h src/Block.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Block.cpp -o obj/Block.o $(LIBS_SDL)
+CC					= g++
+LD 					= g++
+LDFLAGS  			=
+CPPFLAGS 			= -Wall -ggdb   #-O2   # pour optimiser
+OBJ_DIR 			= obj
+SRC_DIR 			= src
+BIN_DIR 			= bin
+INCLUDE_DIR			= -Isrc -Isrc/core -Isrc/sdl2 -Itxt
 
+default: make_dir $(BIN_DIR)/$(FINAL_TARGET_TXT) $(BIN_DIR)/$(FINAL_TARGET_SDL)
 
-obj/Dimension.o : src/Dimension.h src/Dimension.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Dimension.cpp -o obj/Dimension.o $(LIBS_SDL)
+make_dir:
+ifeq ($(OS),Windows_NT)
+	if not exist $(OBJ_DIR) mkdir $(OBJ_DIR) $(OBJ_DIR)\txt $(OBJ_DIR)\sdl2 $(OBJ_DIR)\core $(OBJ_DIR)\qt
+else
+	test -d $(OBJ_DIR) || mkdir -p $(OBJ_DIR) $(OBJ_DIR)/txt $(OBJ_DIR)/sdl2 $(OBJ_DIR)/sdl2/imgui $(OBJ_DIR)/core
+endif
 
+$(BIN_DIR)/$(FINAL_TARGET_TXT): $(SRCS_TXT:%.cpp=$(OBJ_DIR)/%.o)
+	$(LD) $+ -o $@ $(LDFLAGS)
 
-obj/Personnage.o : src/Personnage.h src/Personnage.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Personnage.cpp -o obj/Personnage.o $(LIBS_SDL)
+$(BIN_DIR)/$(FINAL_TARGET_SDL): $(SRCS_SDL:%.cpp=$(OBJ_DIR)/%.o)
+	$(LD) $+ -o $@ $(LDFLAGS) $(LIBS_SDL)
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CC) -c $(CPPFLAGS) $(INCLUDE_DIR_SDL) $(INCLUDE_DIR) $< -o $@
 
-obj/Position.o : src/Position.h src/Position.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/Position.cpp -o obj/Position.o $(LIBS_SDL)
-
-
-obj/WinTxt.o : src/WinTxt.h src/WinTxt.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/WinTxt.cpp -o obj/WinTxt.o $(LIBS_SDL)
-	
-
-obj/txtJeu.o : src/txtJeu.h src/txtJeu.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/txtJeu.cpp -o obj/txtJeu.o $(LIBS_SDL)
-
-obj/sdlclasse.o : src/sdlclasse.h src/sdlclasse.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/sdlclasse.cpp -o obj/sdlclasse.o $(LIBS_SDL)
-
-obj/sdlmain.o : src/sdlmain.cpp
-	$(CC) $(FLAGS) $(INCLUDE_DIR_SDL) src/sdlmain.cpp -o obj/sdlmain.o $(LIBS_SDL)
-
-	
-val:
-	valgrind --tool=memcheck --leak-check=full  ./bin/affichagetxt
-
-
-git:
-	git add/src*
 
 clean:
-	rm -f  ./obj/* ./bin/*
+ifeq ($(OS),Windows_NT)
+	del /f $(OBJ_DIR)\txt\*.o $(OBJ_DIR)\sdl2\*.o $(OBJ_DIR)\core\*.o $(BIN_DIR)\$(FINAL_TARGET_TXT).exe $(BIN_DIR)\$(FINAL_TARGET_SDL).exe
+else
+	rm -rf $(OBJ_DIR) $(BIN_DIR)/$(FINAL_TARGET_TXT) $(BIN_DIR)/$(FINAL_TARGET_SDL) doc/html
+endif
+
