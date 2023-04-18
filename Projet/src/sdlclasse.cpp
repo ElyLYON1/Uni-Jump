@@ -149,12 +149,14 @@ SDLSimple::SDLSimple () : UneCarte() {
     UneDcarte.setPerso(UnPersonnage); 
     UneDcarte.Block_PersoInit1();
     UneDcarte.Block_Init2();
+    
+    UneCarte = UneDcarte;
 
 	int dimx, dimy;
 	dimx = UneCarte.getDimCarte().getLargeur();
 	dimy = UneCarte.getDimCarte().getHauteur();
-	//dimx = dimx * TAILLE_SPRITE;
-	//dimy = dimy * TAILLE_SPRITE;
+	dimx = dimx * TAILLE_SPRITE;
+	dimy = dimy * TAILLE_SPRITE;
 
     // Creation de la fenetre
     window = SDL_CreateWindow("doodle jump", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, dimx, dimy, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -167,8 +169,8 @@ SDLSimple::SDLSimple () : UneCarte() {
     renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
     // IMAGES
-    im_personnage.loadFromFile("data/personnage.jpg",renderer);
-    im_block.loadFromFile("data/block.png",renderer);
+    im_personnage.loadFromFile("../data/personnage.jpg",renderer);
+    im_block.loadFromFile("../data/block.png",renderer);
     //im_objet.loadFromFile("data/pastille.png",renderer);
 
     // FONTS
@@ -181,7 +183,7 @@ SDLSimple::SDLSimple () : UneCarte() {
             exit(1);
 	}
 	font_color.r = 50;font_color.g = 50;font_color.b = 255;
-	font_im.setSurface(TTF_RenderText_Solid(font,"Pacman",font_color));
+	font_im.setSurface(TTF_RenderText_Solid(font,"doodle jump",font_color));
 	font_im.loadFromCurrentSurface(renderer);
 
 
@@ -224,11 +226,11 @@ void SDLSimple::sdlAff () {
             if(UneCarte.blockSurPos(x,y)==true)
             {
                 
-                im_block.draw(renderer,x,y,5,2);
+                im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE/3);
             }
         
     // Afficher le sprite du personnage
-	im_personnage.draw(renderer,PersoAff.getPosition().getAbscisse(),UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(),2,2);
+	im_personnage.draw(renderer,(PersoAff.getPosition().getAbscisse())*TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee())*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
 
 
     // Ecrire un titre par dessus
@@ -253,37 +255,39 @@ void SDLSimple::sdlBoucle () {
             //jeu.actionsAutomatiques();
             t = nt;
         }
+        
 
 		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
 		while (SDL_PollEvent(&events)) {
 			if (events.type == SDL_QUIT) quit = true;           // Si l'utilisateur a clique sur la croix de fermeture
 			else if (events.type == SDL_KEYDOWN) {              // Si une touche est enfoncee
-                bool mangePastille = false;
-				switch (events.key.keysym.scancode) {
-				case SDL_SCANCODE_UP:
-				case SDL_SCANCODE_DOWN:
-				case SDL_SCANCODE_LEFT:
-					UneCarte.actionClavier('g');
-					break;
-				case SDL_SCANCODE_RIGHT:
-					UneCarte.actionClavier('d');
-					break;
-                case SDL_SCANCODE_ESCAPE:
-                    UneCarte.actionClavier('s');
-                    UneCarte.ajouteSaut();
-                    break;
-                case SDL_SCANCODE_Q:
-                    quit = true;
-                    break;
-				default: break;
-				}
-				if ((withSound) && (mangePastille))
-                    Mix_PlayChannel(-1,sound,0);
-			}
-		}
+                    bool mangePastille = false;
+                    switch (events.key.keysym.scancode) {
+                    
+                        case SDL_SCANCODE_LEFT:
+                            UneCarte.actionClavier('g');
+                            break;
+                        case SDL_SCANCODE_RIGHT:
+                            UneCarte.actionClavier('d');
+                            break;
+                        case SDL_SCANCODE_UP:
+                            UneCarte.actionClavier('s');
+                            UneCarte.ajouteSaut();
+                            break;
+                        
+                        case SDL_SCANCODE_Q:
+                            quit = true;
+                            break;    
+                        default: break;
+                    }
+                    
+                    if ((withSound) && (mangePastille))
+                        Mix_PlayChannel(-1,sound,0);
+                }
+		    }
 
-		// on affiche le jeu sur le buffer cach�
-		sdlAff();
+            // on affiche le jeu sur le buffer cach�
+            sdlAff();
 
 		// on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
         SDL_RenderPresent(renderer);
