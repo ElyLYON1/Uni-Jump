@@ -171,8 +171,10 @@ void Carte::actionClavier (const char touche)
     switch(touche) 
     {
 		case 'g' :
-				Carte_perso.perso_versGauche();
-                if (Carte_perso.getPosition().getAbscisse() <= 0)
+				if (Carte_perso.getPosition().getAbscisse() > 0){
+                    Carte_perso.perso_versGauche();
+                }
+                else if (Carte_perso.getPosition().getAbscisse() == 0)
                 {
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
