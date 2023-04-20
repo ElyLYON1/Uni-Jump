@@ -169,8 +169,25 @@ SDLSimple::SDLSimple () : UneCarte() {
     renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
     // IMAGES
-    im_personnage.loadFromFile("../data/personnage.jpg",renderer);
-    im_block.loadFromFile("../data/block.png",renderer);
+    im_personnage.loadFromFile("data/personnage.jpg",renderer);
+    if (im_personnage.getTexture() == nullptr) {
+        im_personnage.loadFromFile("../data/personnage.jpg",renderer);
+    } 
+    if (im_personnage.getTexture() == nullptr) {
+        cout << "Failed to load personnage.jpg! SDL Error: " << SDL_GetError() << endl; 
+        SDL_Quit(); 
+        exit(1);
+    }
+
+    im_block.loadFromFile("data/block.png",renderer);
+    if (im_block.getTexture() == nullptr) {
+        im_block.loadFromFile("../data/block.png",renderer);
+    }
+    if (im_block.getTexture() == nullptr) {
+        cout << "Failed to load block.png! SDL Error: " << SDL_GetError() << endl; 
+        SDL_Quit(); 
+        exit(1);
+    }
     //im_objet.loadFromFile("data/pastille.png",renderer);
 
     // FONTS

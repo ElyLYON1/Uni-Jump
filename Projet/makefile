@@ -56,6 +56,11 @@ $(BIN_DIR)/$(FINAL_TARGET_SDL): $(SRCS_SDL:%.cpp=$(OBJ_DIR)/%.o)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) -c $(CPPFLAGS) $(INCLUDE_DIR_SDL) $(INCLUDE_DIR) $< -o $@
 
+txt:
+	./bin/affichagetxt
+
+sdl:
+	./bin/affichagesdl
 
 clean:
 ifeq ($(OS),Windows_NT)
