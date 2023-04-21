@@ -37,6 +37,7 @@ unsigned int Position::getAbscisse() const
     return Pos_abscisse;
 }
 
+
 //Retourne la valeur de Pos_ordonnee
 unsigned int Position::getOrdonnee() const
 {
@@ -51,10 +52,12 @@ unsigned int Position::getDistance(const Position &Point2) const
     return sqrt(pow(Pos_abscisse - Point2.Pos_abscisse, 2) + pow(Pos_ordonnee - Point2.Pos_ordonnee, 2));
 }
 
+
 unsigned int Position::getDistanceAbs(const Position &Point2) const
 {
     return sqrt((Pos_abscisse - Point2.Pos_abscisse) * (Pos_abscisse - Point2.Pos_abscisse));
 }
+
 
     // Modifie la valeur de Pos_abscisse
     void Position::setAbscisse(unsigned int abscisse)

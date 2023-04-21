@@ -27,7 +27,7 @@ private:
 
 public:
     Personnage();
-    Personnage(std::string Pseude, Position Pos, Dimension Dim, unsigned int nbPixelParCarreau, unsigned int Saut);
+    Personnage(std::string Pseudo, Position Pos, Dimension Dim, unsigned int nbPixelParCarreau, unsigned int Saut);
     ~Personnage();
 
     std::string getPseudo() const;

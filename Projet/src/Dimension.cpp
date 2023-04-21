@@ -15,8 +15,8 @@ Dimension::Dimension()
 //Initialisation des attributs avec les paramettre en donné pour Dimension
 Dimension::Dimension(unsigned int Largeur, unsigned int Hauteur)
 {
-    assert(Largeur > 0);
-    assert(Hauteur > 0);
+    assert(Largeur >= 0);
+    assert(Hauteur >= 0);
     Dim_Largeur = Largeur;
     Dim_Hauteur = Hauteur;
 }

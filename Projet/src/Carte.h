@@ -5,61 +5,62 @@
 
 #include <vector>
 
-
 class Carte
 {
 
-    private:
-        //dimension de la carte
-        Dimension Carte_Dimension;
-        
-        //Personnage dans la carte
-        Personnage Carte_perso;
-        
-        //Tableau dynamique de block
-       std::vector<Block>  Carte_TabBlock;
-       // int Carte_taille_TabBlock;
+private:
+  // dimension de la carte
+  Dimension Carte_Dimension;
 
+  // Personnage dans la carte
+  Personnage Carte_perso;
 
-    public:
-        Carte();
-        Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
+  // Tableau dynamique de block
+  std::vector<Block> Carte_TabBlock;
+  // int Carte_taille_TabBlock;
+  unsigned int nbSautmax;
 
-        ~Carte();
+public:
+  Carte();
+  Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
 
-        Dimension getDimCarte() const;
-        Personnage getPerso() const;
-        Block getBlock(int numBlock)const;
-        std::vector<Block> getTabBlock() const;
+  ~Carte();
 
-        int getTailleTabBlock() const;
-        int getTailleUtilisee() const;
+  Dimension getDimCarte() const;
+  Personnage getPerso() const;
+  Block getBlock(int numBlock) const;
+  std::vector<Block> getTabBlock() const;
 
-        void remplirTabBlockTxt();
+  int getTailleTabBlock() const;
+  int getTailleUtilisee() const;
 
-        bool blockSurPos(int x, int y)const;
-        void setBlock(int numBlock, Block b);
-        void ajouterBlock(Block b);
+  bool blockSurPos(int x, int y) const;
+  void setBlock(int numBlock, Block b);
+  void ajouterBlock(Block b);
 
-        void setDimension(Dimension Dimension);
-        void setPerso(Personnage Perso);
+  void setDimension(Dimension Dimension);
+  void setPerso(Personnage Perso);
 
+  int getnbEtage();
+  void remplirModeFacile(int difficulté);
 
-        int getnbEtage();
-        void remplirModeFacile(int difficulté);
+  bool PersoSurBlock();
+  void actionClavier(const char touche);
 
-        bool PersoSurBlock();
-        void actionClavier(const char touche);
+  void Block_PersoInit1();
+  void Block_Init2();
 
-        void Block_PersoInit1();
-        void Block_Init2();
+  unsigned int getnbSaut() const;
+  void ajouteSaut();
+  void PersoGravite();
+  bool persoSurBlock2();
 
-        void PersoGravite();
-        bool persoSurBlock2();
+  void testRegression();
 
-
-        void testRegression();
-
+  void boucleJeu();
+  void tout_deplacer();
+  void viePerdue();
+  bool getViePerso();
 };
 
 #endif /* _CARTE_H */

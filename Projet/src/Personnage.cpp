@@ -2,7 +2,7 @@
 #include "Carte.h"
 #include "Position.h"
 #include "Dimension.h"
-
+#include <unistd.h>
 #include <cassert>
 
 #include <cstring>
@@ -21,7 +21,7 @@ Personnage::Personnage()
 }
 
 // Initialisation des attributs avec les paramettre en donné pour Personnage
-Personnage::Personnage(string Pseude, Position Pos, Dimension Dim, unsigned int nbPixelParCarreau, unsigned int Saute)
+Personnage::Personnage(string Pseudo, Position Pos, Dimension Dim, unsigned int nbPixelParCarreau, unsigned int Saute)
 {
     assert(Pos.getAbscisse() >= 0);
     assert(Pos.getOrdonnee() >= 0);
@@ -29,7 +29,7 @@ Personnage::Personnage(string Pseude, Position Pos, Dimension Dim, unsigned int 
     assert(Dim.getHauteur() > 0);
     assert(nbPixelParCarreau > 0);
     assert(Saute > 0);
-    Perso_pseudo = Pseude;
+    Perso_pseudo = Pseudo;
     Perso_Position = Pos;
     Perso_Dim = Dim;
     Perso_Vie = true;
@@ -110,6 +110,7 @@ void Personnage::setOrdonnee(unsigned int ordonnee)
 {
     assert(ordonnee >= 0);
     Perso_Position.setOrdonnee(ordonnee);
+    
 }
 
 // Modifie la dimension du personnage
@@ -155,12 +156,20 @@ void Personnage::perso_versDroite()
 
 // Fonction qui permet de faire sauter le personnage
 void Personnage::perso_sauter()
+{   
+    unsigned int i;
+for(i=0;i<Perso_Saute;i++)
 {
-    Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + nbPixelParCarreau);
+    Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() + 1);
+    usleep(500000);
+
+}
 }
 
 // Fonction qui permet de faire tomber le personnage
 void Personnage::perso_tomber()
 {
+
     Perso_Position.setOrdonnee(Perso_Position.getOrdonnee() - nbPixelParCarreau);
+
 }

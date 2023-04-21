@@ -6,66 +6,61 @@
 #endif // WIN32
 #include "WinTxt.h"
 
-
 #include "Carte.h"
 
 void txtAff(WinTXT &win, const Carte &UneCarte)
 {
-  //  const Terrain &ter = jeu.getConstTerrain();
+    //  const Terrain &ter = jeu.getConstTerrain();
     const Personnage &PersoAff = UneCarte.getPerso();
-    const std::vector <Block> &TabBlock = UneCarte.getTabBlock();
+    const std::vector<Block> &TabBlock = UneCarte.getTabBlock();
 
     win.clear();
 
     // Affichage des murs et des pastilles
     for (unsigned int x = 0; x < UneCarte.getDimCarte().getLargeur(); ++x)
         for (unsigned int y = 0; y < UneCarte.getDimCarte().getHauteur(); ++y)
-            if(UneCarte.blockSurPos(x,y)==true)
+            if (UneCarte.blockSurPos(x, y) == true)
             {
                 win.print(x, UneCarte.getDimCarte().getHauteur() - y, '_');
             }
             else
             {
-                win.print(x, UneCarte.getDimCarte().getHauteur()- y, ' ');
+                win.print(x, UneCarte.getDimCarte().getHauteur() - y, ' ');
             }
 
-    //affichage des limites de la carte
-    for(unsigned int i = 0; i<= UneCarte.getDimCarte().getLargeur(); i++)
+    // affichage des limites de la carte
+    for (unsigned int i = 0; i <= UneCarte.getDimCarte().getLargeur(); i++)
     {
-        for (unsigned int j = 0; j<=UneCarte.getDimCarte().getHauteur(); j++)
+        for (unsigned int j = 0; j <= UneCarte.getDimCarte().getHauteur(); j++)
         {
-            if (i==0 ){
-                win.print(i,j,'*');
-            }
-            if (i==UneCarte.getDimCarte().getLargeur()){
-                win.print(i,j,'*');
-            }
-            if (j==UneCarte.getDimCarte().getHauteur())
+            if (i == 0)
             {
-                win.print(i,j,'*');
+                win.print(i, j, '*');
+            }
+            if (i == UneCarte.getDimCarte().getLargeur())
+            {
+                win.print(i, j, '*');
+            }
+            if (j == UneCarte.getDimCarte().getHauteur())
+            {
+                win.print(i, j, '*');
             }
         }
-        
     }
 
-
     // Affichage de Pacman
-    win.print( PersoAff.getPosition().getAbscisse(), UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(), 'P');
+    win.print(PersoAff.getPosition().getAbscisse(), UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee(), 'P');
     // Affichage du Fantome
 
     win.draw();
 }
 
-
-
-
-
 void txtBoucle(Carte &UneCarte)
 {
-    Dimension dimcarte=UneCarte.getDimCarte();
+    Dimension dimcarte = UneCarte.getDimCarte();
     // Creation d'une nouvelle fenetre en mode texte
     // => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
-    WinTXT win(dimcarte.getLargeur()+1, dimcarte.getHauteur()+1);
+    WinTXT win(dimcarte.getLargeur() + 1, dimcarte.getHauteur() + 1);
 
     bool ok = true;
     int c;
@@ -80,7 +75,7 @@ void txtBoucle(Carte &UneCarte)
         usleep(100000);
 #endif // WIN32
 
-       //jeu.actionsAutomatiques();
+        // jeu.actionsAutomatiques();
 
         c = win.getCh();
         switch (c)
@@ -99,5 +94,5 @@ void txtBoucle(Carte &UneCarte)
             break;
         }
 
-    } while (ok);
+    } while (ok == true);
 }
