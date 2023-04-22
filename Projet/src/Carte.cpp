@@ -256,7 +256,24 @@ bool Carte::persoSurBlock2(){
     return false;
 }
 
+bool Carte::persoSurBlock3(Block b){
+    unsigned int i = Carte_perso.getPosition().getOrdonnee();
+    unsigned int j = Carte_perso.getPosition().getAbscisse();
+    if (b.getPosition().getOrdonnee() == i && b.getPosition().getAbscisse() == j)
+    {
+        return true;
+    }
+    if( b.getPosition().getOrdonnee() == i && b.getPosition().getAbscisse() == j-1)
+    {
+        return true;
+    }
+    if (b.getPosition().getOrdonnee() == i && b.getPosition().getAbscisse() == j+1)
+    {
+        return true;
+    }
 
+    return false;
+}
 
 
 
@@ -461,6 +478,10 @@ void Carte::boucleJeu(){
             }
             else{
                 pos.setAbscisse(pos.getAbscisse()+1);
+            }
+            if (persoSurBlock3(Carte_TabBlock[i])==true)
+            {
+                Carte_perso.setPosition(pos);
             }
             Carte_TabBlock[i].setPosition(pos);
         }

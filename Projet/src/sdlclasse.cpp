@@ -139,7 +139,7 @@ SDLSimple::SDLSimple () : UneCarte() {
     Dimension UneDimension(10, 20);
     Personnage UnPersonnage;
     UnPersonnage.setPosition(Position(2, 1));
-    UnPersonnage.setSaut(3);
+    UnPersonnage.setSaut(4);
     UnPersonnage.setVie(true);
     std::vector<Block> UnTabBlock;
     UnTabBlock.push_back(unblock);
@@ -296,7 +296,7 @@ void SDLSimple::sdlBoucle () {
                     case SDL_SCANCODE_RIGHT:
                         UneCarte.actionClavier('d');
                         break;
-                    case SDL_SCANCODE_UP:
+                    case SDL_SCANCODE_SPACE:
                         UneCarte.actionClavier('s');
                         UneCarte.ajouteSaut();
                         break;

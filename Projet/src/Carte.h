@@ -59,6 +59,7 @@ class Carte
         void ajouteSaut();
         void PersoGravite();
         bool persoSurBlock2();
+        bool persoSurBlock3(Block b);
         
 
 
