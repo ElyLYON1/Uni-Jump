@@ -5,6 +5,7 @@
 #include "Dimension.h"
 
 
+
 class Block
 {
     private:
@@ -42,6 +43,8 @@ class Block
 
         bool getSolide() const;
 
+        bool getMobile() const;
+
         void setPosition(Position Position);
 
         void setDimension(Dimension Dimension);
@@ -49,6 +52,10 @@ class Block
         void setCouleur(Couleur Couleur);
 
         void setSolide(bool Solide);
+
+        void setMobile(bool mobile);
+
+        //void deplacement(const Dimension &dimCarte);
     
 
 

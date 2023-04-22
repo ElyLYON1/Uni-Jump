@@ -140,6 +140,7 @@ SDLSimple::SDLSimple () : UneCarte() {
     Personnage UnPersonnage;
     UnPersonnage.setPosition(Position(2, 1));
     UnPersonnage.setSaut(3);
+    UnPersonnage.setVie(true);
     std::vector<Block> UnTabBlock;
     UnTabBlock.push_back(unblock);
     UnTabBlock.push_back(unblock2);
@@ -269,33 +270,47 @@ void SDLSimple::sdlBoucle () {
 
         nt = SDL_GetTicks();
         if (nt-t>500) {
-            //jeu.actionsAutomatiques();
+            UneCarte.boucleJeu();
+            /*for (unsigned int i = 0; i < UneCarte.getTailleTabBlock(); ++i)
+            {
+                
+                UneCarte.getBlock(i).deplacement(UneCarte.getDimCarte());
+            }*/
+            
+            
             t = nt;
         }
+    
         
-
+         
+        
 		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
 		while (SDL_PollEvent(&events)) {
 			if (events.type == SDL_QUIT) quit = true;           // Si l'utilisateur a clique sur la croix de fermeture
 			else if (events.type == SDL_KEYDOWN) {              // Si une touche est enfoncee
-                    bool mangePastille = false;
+        bool mangePastille = false;
                     switch (events.key.keysym.scancode) {
+                    case SDL_SCANCODE_LEFT:
+                        UneCarte.actionClavier('g');
+                        break;
+                    case SDL_SCANCODE_RIGHT:
+                        UneCarte.actionClavier('d');
+                        break;
+                    case SDL_SCANCODE_UP:
+                        UneCarte.actionClavier('s');
+                        UneCarte.ajouteSaut();
+                        break;
+        case SDL_SCANCODE_ESCAPE:
+        case SDL_SCANCODE_Q:
+            quit = true;
+            break;    
+                    default: break;
+                    }
                     
-                        case SDL_SCANCODE_LEFT:
-                            UneCarte.actionClavier('g');
-                            break;
-                        case SDL_SCANCODE_RIGHT:
-                            UneCarte.actionClavier('d');
-                            break;
-                        case SDL_SCANCODE_UP:
-                            UneCarte.actionClavier('s');
-                            UneCarte.ajouteSaut();
-                            break;
-                        
-                        case SDL_SCANCODE_Q:
-                            quit = true;
-                            break;    
-                        default: break;
+                    if (UneCarte.getViePerso() == false)
+                    {
+                        quit = true;
+                        SDL_Quit();
                     }
                     
                     if ((withSound) && (mangePastille))

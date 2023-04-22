@@ -79,6 +79,8 @@ Couleur Block::getCouleur() const
 //Retourne la valeur de solide
 bool Block::getSolide() const {  return Block_Solide; }
 
+bool Block::getMobile() const {  return Block_mobile; }
+
 //Modifie la position du block
 void Block::setPosition(Position Position)
 {
@@ -109,3 +111,22 @@ void Block::setSolide(bool Solide)
 {
     Block_Solide = Solide;
 }
+
+void Block::setMobile(bool mobile)
+{
+    Block_mobile = mobile;
+}
+/*
+void Block::deplacement(const Dimension &dimCarte)
+{
+    if (Block_mobile)
+    {
+        Position pos = getPosition();
+        pos.setAbscisse(pos.getAbscisse() + 1);
+        if (pos.getAbscisse() >= dimCarte.getLargeur())
+        {
+            pos.setAbscisse(0);
+        }
+        setPosition(pos);
+    }
+} */

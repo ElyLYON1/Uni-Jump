@@ -70,6 +70,8 @@ class Carte
         void viePerdue();
         bool getViePerso();
 
+        void actionsAutomatiques();
+
 };
 
 #endif /* _CARTE_H */
