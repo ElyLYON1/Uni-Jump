@@ -183,14 +183,7 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
-                if (nbSautmax % (Carte_perso.getSaut() +1) == 0)
-                {
-                    while (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() >= 1)
-                    {
-                        PersoGravite();
-                    }
-                    
-                }
+        
                 //boucleJeu();
 				break;
 		case 'd' :
@@ -199,14 +192,7 @@ void Carte::actionClavier (const char touche)
                 {
                     Carte_perso.setAbscisse(0);
                 }
-                if (nbSautmax % (Carte_perso.getSaut() +1) == 0)
-                {
-                    while (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() >= 1)
-                    {
-                        PersoGravite();
-                    }
-                    
-                }
+                
                 //boucleJeu();
 				break;
 		case 's' :
@@ -214,7 +200,7 @@ void Carte::actionClavier (const char touche)
                 //fonction pour faire redesendre le personage
                 
                 
-                if(nbSautmax % (Carte_perso.getSaut() +1) == 0){
+                if(nbSautmax ==0){
                     Carte_perso.perso_sauter();
                     ajouteSaut();
                 }
@@ -249,7 +235,7 @@ bool Carte::persoSurBlock2(){
     {
         if (Carte_TabBlock[k].getPosition().getOrdonnee() == i && Carte_TabBlock[k].getPosition().getAbscisse() == j)
         {
-            Carte_perso.setAbscisse(Carte_TabBlock[k].getPosition().getAbscisse());
+            //Carte_perso.setAbscisse(Carte_TabBlock[k].getPosition().getAbscisse());
             return true;
         }
     }
@@ -297,11 +283,15 @@ void Carte::Block_Init2()
     int maxLargeur = Carte_Dimension.getLargeur();
     while (getBlock(i).getPosition().getOrdonnee() <= Carte_Dimension.getHauteur() - 3 ){
         int abscisse = (rand() % maxLargeur);
-        int ordonnee = getBlock(i).getPosition().getOrdonnee() + rand() % (saut - 1 ) +1;
-        int type = rand() % 2;
+        int ordonnee = getBlock(i).getPosition().getOrdonnee() + rand() % (saut-2) +1;
+        int type = rand() % (i+1);
         Position pos1(abscisse, ordonnee);
         Block b(pos1);
-        b.setMobile(type);
+        if (type<5){
+            b.setMobile(false);
+        }
+        else{
+            b.setMobile(true);}
         ajouterBlock(b);
         i++;
     }
@@ -454,21 +444,23 @@ bool Carte::getViePerso(){
 
 
 void Carte::boucleJeu(){
-    if (persoSurBlock2()==true)
-    {
-        tout_deplacer();
-        Block_Init2();
-    }
-    if (nbSautmax % (Carte_perso.getSaut() +1) == Carte_perso.getSaut())
+    if (nbSautmax % (Carte_perso.getSaut() +1) == 0){
+        if (persoSurBlock2()==true)
+        {
+            tout_deplacer();
+            Block_Init2();
+        }
+    }    
+    if (persoSurBlock2() || nbSautmax % (Carte_perso.getSaut() +1) > 0){
+        Carte_perso.perso_sauter();
+        ajouteSaut();
+    }    
+    if (nbSautmax % (Carte_perso.getSaut() +1) == 0)
     {
         if (persoSurBlock2()==false && Carte_perso.getPosition().getOrdonnee() > 0)
         {
             PersoGravite();
         }
-    }
-    else if (nbSautmax % (Carte_perso.getSaut() +1) > 0 && nbSautmax % (Carte_perso.getSaut() +1) < Carte_perso.getSaut()){
-        Carte_perso.perso_sauter();
-        ajouteSaut();
     }
     for(int i=0; i<getTailleTabBlock();i++){
         if (Carte_TabBlock[i].getMobile()==true){

@@ -138,8 +138,8 @@ SDLSimple::SDLSimple () : UneCarte() {
 
     Dimension UneDimension(10, 20);
     Personnage UnPersonnage;
-    UnPersonnage.setPosition(Position(2, 1));
-    UnPersonnage.setSaut(4);
+    //UnPersonnage.setPosition(Position(2, 1));
+    UnPersonnage.setSaut(6);
     UnPersonnage.setVie(true);
     std::vector<Block> UnTabBlock;
     UnTabBlock.push_back(unblock);
@@ -244,7 +244,7 @@ void SDLSimple::sdlAff () {
             if(UneCarte.blockSurPos(x,y)==true)
             {
                 
-                im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE/3);
+                im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
             }
         
     // Afficher le sprite du personnage
