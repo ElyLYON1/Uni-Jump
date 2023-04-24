@@ -13,11 +13,13 @@ class Image
 {
 
 private:
+
     SDL_Surface *m_surface;
     SDL_Texture *m_texture;
     bool m_hasChanged;
 
 public:
+
     Image();
     ~Image();
     void loadFromFile(const char *filename, SDL_Renderer *renderer);
@@ -25,6 +27,7 @@ public:
     void draw(SDL_Renderer *renderer, int x, int y, int w = -1, int h = -1);
     SDL_Texture *getTexture() const;
     void setSurface(SDL_Surface *surf);
+
 };
 
 /**
@@ -35,7 +38,7 @@ class SDLSimple
 
 private:
     Carte UneCarte;
-    
+
 
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -51,6 +54,7 @@ private:
     Image im_block;
     Image im_objet;
     Image im_menu;
+    Image im_message;
 
 
     bool souris;
@@ -60,9 +64,30 @@ public:
     SDLSimple();
     void sdlAffCarte();
     ~SDLSimple();
+    void sdlAffmenu();
     void sdlBoucle();
     void sdlAff();
     void sdlBoucleMenu();
 };
 
+
+class SDLSimpleMenu
+{
+
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+
+    TTF_Font *font;
+    Image font_im;
+    SDL_Color font_color;
+
+
+
+    Image im_start;
+    Image im_aide;
+    Image im_lvlfacile;
+    Image im_lvlmoyen;
+    Image im_lvldifficile;
+
+};
 #endif

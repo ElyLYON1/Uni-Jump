@@ -61,6 +61,7 @@ public:
   void tout_deplacer();
   void viePerdue();
   bool getViePerso();
+  void ActionAuto();
 };
 
 #endif /* _CARTE_H */

@@ -9,7 +9,9 @@
 #include <vector>
 #include <iostream>
 #include <cassert>
+#include <unistd.h> // pour usleep
 using namespace std;
+
 
 Carte::Carte() : Carte_Dimension(), Carte_perso(), Carte_TabBlock()
 {
@@ -415,4 +417,18 @@ bool Carte::getViePerso()
     {
         return false;
     }
+}
+
+void Carte::ActionAuto()
+{
+    int x =Carte_perso.getPosition().getAbscisse();
+    int y = Carte_perso.getPosition().getOrdonnee();
+    do
+    {
+        y--;
+        Carte_perso.setPosition(Position(x, y));
+        usleep(100000);
+        
+    } while (blockSurPos(x, y) == false);
+
 }

@@ -154,6 +154,7 @@ SDLSimple::SDLSimple() : UneCarte()
     UneCarte.setDimension(dim);
    // dimx = UneCarte.getDimCarte().getLargeur();
    // dimy = UneCarte.getDimCarte().getHauteur();
+
     dimx = 50 * TAILLE_SPRITE; //dimension du menu en pixel, valeur de test 
     dimy = 50 *TAILLE_SPRITE;
 
@@ -169,9 +170,20 @@ SDLSimple::SDLSimple() : UneCarte()
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     // IMAGES
-    im_menu.loadFromFile("data/menu.png", renderer);
 
+    im_menu.loadFromFile("data/menu.png", renderer);
+    if (im_menu.getTexture() == nullptr)
+    {
+        im_menu.loadFromFile("../data/menu.png", renderer);
+    }
+    if (im_menu.getTexture() == nullptr)
+    {
+        cout << "Failed to load block.png! SDL Error: " << SDL_GetError() << endl;
+        SDL_Quit();
+        exit(1);
+    }
     // im_objet.loadFromFile("data/pastille.png",renderer);
+
 
     // FONTS
     font = TTF_OpenFont("data/DejaVuSansCondensed.ttf", 50);
@@ -203,6 +215,9 @@ SDLSimple::SDLSimple() : UneCarte()
         }
     }
 }
+
+
+
 
 void SDLSimple::sdlAffCarte()
 {
@@ -280,6 +295,7 @@ void SDLSimple::sdlAffCarte()
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     // IMAGES
+
     im_personnage.loadFromFile("data/personnage.jpg", renderer);
     if (im_personnage.getTexture() == nullptr)
     {
@@ -303,7 +319,7 @@ void SDLSimple::sdlAffCarte()
         SDL_Quit();
         exit(1);
     }
-    // im_objet.loadFromFile("data/pastille.png",renderer);
+
 
     // FONTS
     font = TTF_OpenFont("data/DejaVuSansCondensed.ttf", 50);
@@ -346,8 +362,15 @@ SDLSimple::~SDLSimple()
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
+void SDLSimple::sdlAffmenu()
+{
+    SDL_SetRenderDrawColor(renderer, 230, 240, 255, 255);
+    SDL_RenderClear(renderer);
 
-void SDLSimple::sdlAff()
+     im_menu.draw(renderer,0,0,TAILLE_SPRITE * UneCarte.getDimCarte().getLargeur(), TAILLE_SPRITE * UneCarte.getDimCarte().getHauteur());
+}
+
+    void SDLSimple::sdlAff()
 {
     // Remplir l'écran de blanc
     SDL_SetRenderDrawColor(renderer, 230, 240, 255, 255);
@@ -355,6 +378,9 @@ void SDLSimple::sdlAff()
 
     const Personnage &PersoAff = UneCarte.getPerso();
     const std::vector<Block> &TabBlock = UneCarte.getTabBlock();
+
+
+   // UneCarte.ActionAuto();
 
     // Affichage des murs et des pastilles
     for (unsigned int x = 0; x < UneCarte.getDimCarte().getLargeur(); ++x)
@@ -368,7 +394,7 @@ void SDLSimple::sdlAff()
     // Afficher le sprite du personnage
     im_personnage.draw(renderer, (PersoAff.getPosition().getAbscisse()) * TAILLE_SPRITE, (UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee()) * TAILLE_SPRITE, TAILLE_SPRITE, TAILLE_SPRITE);
 
-    im_menu.draw(renderer,0,0,TAILLE_SPRITE * UneCarte.getDimCarte().getLargeur(), TAILLE_SPRITE * UneCarte.getDimCarte().getHauteur());
+    //im_menu.draw(renderer,0,0,TAILLE_SPRITE * UneCarte.getDimCarte().getLargeur(), TAILLE_SPRITE * UneCarte.getDimCarte().getHauteur());
     
     // Ecrire un titre par dessus
     SDL_Rect positionTitre;
@@ -377,78 +403,132 @@ void SDLSimple::sdlAff()
     positionTitre.y = 49;
     positionTitre.w = 100;
     positionTitre.h = 30;
+
     SDL_RenderCopy(renderer, font_im.getTexture(), nullptr, &positionTitre);
-}
-
-/*
-void SDLSimple::sdlBoucleMenu()
-{
-    SDL_Event events;
-    bool entrer=false;
-
 
 }
-*/
+
 
 void SDLSimple::sdlBoucle()
 {
     SDL_Event events;
     bool quit = false;
+    bool go=false;
 
 
     Uint32 t = SDL_GetTicks(), nt;
     while (!quit)
     {
         // tant que ce n'est pas la fin ...
+    while(go==false)
+    {
+     sdlAffmenu();
 
+     switch (events.type)
+     {
+        case SDL_QUIT:
 
+         quit = true;
 
-        nt = SDL_GetTicks();
-        if (nt - t > 500)
-        {
-            // jeu.actionsAutomatiques();
-            t = nt;
-        }
+          break;
 
-        // tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
-        while (SDL_PollEvent(&events))
-        {
-            if (events.type == SDL_QUIT)
-                quit = true; // Si l'utilisateur a clique sur la croix de fermeture
-            else if (events.type == SDL_KEYDOWN)
-            { // Si une touche est enfoncee
-                bool mangePastille = false;
-                switch (events.key.keysym.scancode)
+         case SDL_MOUSEBUTTONDOWN:
+
+                if (events.button.button == SDL_BUTTON_LEFT)
                 {
+                    Position posclic;
+                    posclic.setAbscisse(events.button.x);
+                    posclic.setOrdonnee(events.button.y);
+                    //endroit du clic ici ce sera le bouton start
+                        if (events.motion.x > 0 && events.motion.x < 100 && events.motion.y > 0 && events.motion.y < 100)
+                        {
+                            go = true;
+                        }
+                        else if (events.motion.x > 0 && events.motion.x < 100 && events.motion.y > 0 && events.motion.y < 100)
+                        {
+                            quit = true;
 
-                case SDL_SCANCODE_LEFT:
-                    UneCarte.actionClavier('g');
-                    break;
-                case SDL_SCANCODE_RIGHT:
-                    UneCarte.actionClavier('d');
-                    break;
-                case SDL_SCANCODE_UP:
-                    UneCarte.actionClavier('s');
-                    UneCarte.ajouteSaut();
-                    break;
+                        }
+                    }
 
-                case SDL_SCANCODE_Q:
-                    quit = true;
-                    break;
-                default:
-                    break;
+            case SDL_MOUSEMOTION:
+                    // endroit de la souris ici ce sera le bouton start
+                    if (events.motion.x > 0 && events.motion.x < 100 && events.motion.y > 0 && events.motion.y < 100)
+                    {
+                        
+                         
+                      //  message.draw(renderer, 110, 50, -1, -1); // Afficher la surface d'affichage mise à jour
+                        font_color.r = 50;
+                        font_color.g = 50;
+                        font_color.b = 255;
+                        font_im.setSurface(TTF_RenderText_Solid(font, "Lancement de la partie", font_color));
+                        font_im.loadFromCurrentSurface(renderer);
+
+                        // Afficher un message pour le bouton start
+                    }
+
+                    else if (events.motion.x > 0 && events.motion.x < 100 && events.motion.y > 0 && events.motion.y < 100)
+                    {
+                        // Afficher un message pour le bouton commande 
+                    }
+
+                   else if (events.motion.x > 0 && events.motion.x < 100 && events.motion.y > 0 && events.motion.y < 100)
+                    {
+                        // Afficher un message pour le bouton quitter 
+                    }
+
+                    SDL_RenderPresent(renderer);
                 }
 
-                if ((withSound) && (mangePastille))
-                    Mix_PlayChannel(-1, sound, 0);
-            }
-        }
+                nt = SDL_GetTicks();
 
-        // on affiche le jeu sur le buffer cach�
-        sdlAff();
+                if (nt - t > 500)
+                {
 
-        // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
-        SDL_RenderPresent(renderer);
+                    t = nt;
+
+                }
+
+                // tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
+                while (SDL_PollEvent(&events))
+                {
+                    if (events.type == SDL_QUIT)
+                        quit = true; // Si l'utilisateur a clique sur la croix de fermeture
+                    else if (events.type == SDL_KEYDOWN)
+                    { // Si une touche est enfoncee
+                        bool mangePastille = false;
+                        switch (events.key.keysym.scancode)
+                        {
+
+                        case SDL_SCANCODE_LEFT:
+                            UneCarte.actionClavier('g');
+                            break;
+                        case SDL_SCANCODE_RIGHT:
+                            UneCarte.actionClavier('d');
+                            break;
+                        case SDL_SCANCODE_UP:
+                            UneCarte.actionClavier('s');
+                            UneCarte.ajouteSaut();
+                            break;
+
+                        case SDL_SCANCODE_Q:
+                            quit = true;
+                            break;
+                        default:
+                            break;
+                        }
+
+                        if ((withSound) && (mangePastille))
+                            Mix_PlayChannel(-1, sound, 0);
+                    }
+                }
+
+                // on affiche le jeu sur le buffer caché
+                   sdlAff();
+
+                // on permute les deux buffers (cette fonction ne doit se faire qu'une seule fois dans la boucle)
+                SDL_RenderPresent(renderer);
     }
 
+}
 }
