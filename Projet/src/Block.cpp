@@ -18,19 +18,22 @@ Block::Block()
     Block_Couleur = Couleur();
     Block_Solide = true;
     Block_mobile=false;
-
+    Block_direction=false;
+    Block_intervalle[0]=0;
+    Block_intervalle[1]=0;
 }
 
-Block::Block(Position Pos):Block_Position(Pos),Block_Dimension(),Block_Couleur(),Block_Solide(true),Block_mobile(false)
+Block::Block(Position Pos):Block_Position(Pos),Block_Dimension(),Block_Couleur(),Block_Solide(true),Block_mobile(false), Block_direction(false),Block_intervalle{0,0}
 {
 }
 
-Block::Block(bool solide, bool mobile):Block_Position(),Block_Dimension(),Block_Couleur(),Block_Solide(solide),Block_mobile(mobile)
+
+Block::Block(bool solide, bool mobile):Block_Position(),Block_Dimension(),Block_Couleur(),Block_Solide(solide),Block_mobile(mobile), Block_direction(false), Block_intervalle{0,0}
 {
 }
 
 //Initialisation des attributs avec les paramettre en donné pour Block
-Block::Block(Dimension Dim, Position Pos, bool Solide,bool Mobile):Block_Position(Pos),Block_Dimension(Dim),Block_Couleur(),Block_Solide(Solide),Block_mobile(Mobile)
+Block::Block(Dimension Dim, Position Pos, bool Solide,bool Mobile,bool direction, unsigned int intervalle[2]):Block_Position(Pos),Block_Dimension(Dim),Block_Couleur(),Block_Solide(Solide),Block_mobile(Mobile),Block_direction(direction), Block_intervalle{intervalle[0],intervalle[1]}
 {
     /*Je crois que les assertions sont inutiles car on a deja fait les verifications dans les constructeurs des classes Position, Dimension et Couleur
 
@@ -55,6 +58,10 @@ Block::~Block()
     Block_Dimension = Dimension();
     Block_Couleur = Couleur();
     Block_Solide = false;
+    Block_mobile=false;
+    Block_direction=false;
+    Block_intervalle[0]=0;
+    Block_intervalle[1]=0;
 }
 
 //Retourne la position du block
@@ -80,6 +87,10 @@ Couleur Block::getCouleur() const
 bool Block::getSolide() const {  return Block_Solide; }
 
 bool Block::getMobile() const {  return Block_mobile; }
+
+bool Block::getDirection() const {  return Block_direction; }
+
+unsigned int Block::getIntervalle(int i) const {  return Block_intervalle[i]; }
 
 //Modifie la position du block
 void Block::setPosition(Position Position)
@@ -116,17 +127,14 @@ void Block::setMobile(bool mobile)
 {
     Block_mobile = mobile;
 }
-/*
-void Block::deplacement(const Dimension &dimCarte)
+
+void Block::setDirection(bool direction)
 {
-    if (Block_mobile)
-    {
-        Position pos = getPosition();
-        pos.setAbscisse(pos.getAbscisse() + 1);
-        if (pos.getAbscisse() >= dimCarte.getLargeur())
-        {
-            pos.setAbscisse(0);
-        }
-        setPosition(pos);
-    }
-} */
+    Block_direction = direction;
+}
+
+void Block::setIntervalle(unsigned int intervalle[2])
+{
+    Block_intervalle[0]=intervalle[0];
+    Block_intervalle[1]=intervalle[1];
+}   

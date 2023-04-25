@@ -18,8 +18,16 @@ class Carte
         
         //Tableau dynamique de block
        std::vector<Block>  Carte_TabBlock;
+
+        //Tableau dynamique d'objet
+       std::vector<Block> Carte_TabObjet;
+
        // int Carte_taille_TabBlock;
         unsigned int nbSautmax;
+
+        
+        //Score de jeu quand il tape un block
+        unsigned int score;
     
     public:
         

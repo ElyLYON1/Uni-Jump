@@ -139,7 +139,7 @@ SDLSimple::SDLSimple () : UneCarte() {
     Dimension UneDimension(10, 20);
     Personnage UnPersonnage;
     //UnPersonnage.setPosition(Position(2, 1));
-    UnPersonnage.setSaut(6);
+    UnPersonnage.setSaut(4);
     UnPersonnage.setVie(true);
     std::vector<Block> UnTabBlock;
     UnTabBlock.push_back(unblock);
@@ -244,7 +244,7 @@ void SDLSimple::sdlAff () {
             if(UneCarte.blockSurPos(x,y)==true)
             {
                 
-                im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
+                im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y+1)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
             }
         
     // Afficher le sprite du personnage
@@ -253,7 +253,7 @@ void SDLSimple::sdlAff () {
 
     // Ecrire un titre par dessus
     SDL_Rect positionTitre;
-    positionTitre.x = 270;positionTitre.y = 49;positionTitre.w = 100;positionTitre.h = 30;
+    positionTitre.x = (UneCarte.getDimCarte().getLargeur()-3)*TAILLE_SPRITE/2;positionTitre.y = 49;positionTitre.w = 100;positionTitre.h = 30;
     SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&positionTitre);
 
 }

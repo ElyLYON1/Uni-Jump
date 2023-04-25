@@ -16,8 +16,11 @@ class Block
         Couleur Block_Couleur;
         
         //Si c'est égal a true on peut se poser dessus. Sinon on le casse et on tombe
+        //si Block_direction est égal a true alors le block va vers la gouche sinon vers la droite
         bool Block_Solide;
         bool Block_mobile;
+        bool Block_direction;
+        unsigned int Block_intervalle[2]; 
     public:
 
         Block();
@@ -31,7 +34,7 @@ class Block
         /// @param Coul 
         /// @param Solide 
         /// @param mobile 
-        Block(Dimension Dim, Position Pos, bool Solide, bool mobile);
+        Block(Dimension Dim, Position Pos, bool Solide, bool mobile,bool direction, unsigned int intervalle[2]);
 
         ~Block();
 
@@ -45,6 +48,10 @@ class Block
 
         bool getMobile() const;
 
+        bool getDirection() const;
+
+        unsigned int getIntervalle(int i) const;
+
         void setPosition(Position Position);
 
         void setDimension(Dimension Dimension);
@@ -55,7 +62,9 @@ class Block
 
         void setMobile(bool mobile);
 
-        //void deplacement(const Dimension &dimCarte);
+        void setDirection(bool direction);
+
+        void setIntervalle(unsigned int intervalle[2]);
     
 
 

@@ -13,12 +13,12 @@ using namespace std;
 
 
 
-Carte::Carte():Carte_Dimension(),Carte_perso(),Carte_TabBlock()
+Carte::Carte():Carte_Dimension(),Carte_perso(),Carte_TabBlock(), Carte_TabObjet(), nbSautmax(0),score(0)
 {
 
 }
 
-Carte::Carte(Dimension Dim, Personnage Perso, std::vector<Block> tabBlock) : Carte_Dimension(Dim), Carte_perso(Perso), Carte_TabBlock(tabBlock)
+Carte::Carte(Dimension Dim, Personnage Perso, std::vector<Block> tabBlock) : Carte_Dimension(Dim), Carte_perso(Perso), Carte_TabBlock(tabBlock), nbSautmax(0), score(0)
 {
     //Ou je mets un if ici et en fonction de la difficulté je change les valeurs du nb de block et des proba et de la dimension de la carte
     //Ou je mets en paramètre un tableau de block qui auront deja été definis en fonctions de la difficulté donc plus besoin de nbblock ni de difficulté.
@@ -68,7 +68,7 @@ int Carte::getnbEtage()
 }
 
 //Boucle for pour definir l'étage et le while pour remplir l'étage de block et le switch pour definir le type de block
-void Carte::remplirModeFacile(int difficulté)
+/*void Carte::remplirModeFacile(int difficulté)
 {
    for(int i=1;i<=getnbEtage();i++)
    {
@@ -158,6 +158,8 @@ void Carte::remplirModeFacile(int difficulté)
 }
 
 }
+*/
+
 
 bool Carte::PersoSurBlock()
 {
@@ -291,7 +293,14 @@ void Carte::Block_Init2()
             b.setMobile(false);
         }
         else{
-            b.setMobile(true);}
+            b.setMobile(true);
+               
+        }
+        b.setDirection(rand() % 2);
+        unsigned int interval[2];
+        interval[0] = rand() % (abscisse + 1) - 1;
+        interval[1] = rand() % (maxLargeur - abscisse) + abscisse;
+        b.setIntervalle(interval);
         ajouterBlock(b);
         i++;
     }
@@ -449,6 +458,7 @@ void Carte::boucleJeu(){
         {
             tout_deplacer();
             Block_Init2();
+            score=score+1;
         }
     }    
     if (persoSurBlock2() || nbSautmax % (Carte_perso.getSaut() +1) > 0){
@@ -465,13 +475,21 @@ void Carte::boucleJeu(){
     for(int i=0; i<getTailleTabBlock();i++){
         if (Carte_TabBlock[i].getMobile()==true){
             Position pos = Carte_TabBlock[i].getPosition();
-            if(pos.getAbscisse()==Carte_Dimension.getLargeur()-1){
-                pos.setAbscisse(0);
+            if(pos.getAbscisse() == Carte_TabBlock[i].getIntervalle(1)){
+                Carte_TabBlock[i].setDirection(0);
             }
-            else{
-                pos.setAbscisse(pos.getAbscisse()+1);
+            if (pos.getAbscisse() == Carte_TabBlock[i].getIntervalle(0)){
+                Carte_TabBlock[i].setDirection(1);
             }
-            if (persoSurBlock3(Carte_TabBlock[i])==true)
+            if(Carte_TabBlock[i].getDirection()==1){    
+                pos.setAbscisse(pos.getAbscisse()+ 1);
+            }
+            if(Carte_TabBlock[i].getDirection()==0){
+                pos.setAbscisse(pos.getAbscisse()-1);
+            }
+            
+            
+            if (persoSurBlock3(Carte_TabBlock[i])==true && nbSautmax % (Carte_perso.getSaut() +1) == 0)
             {
                 Carte_perso.setPosition(pos);
             }
