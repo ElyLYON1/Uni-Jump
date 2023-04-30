@@ -28,27 +28,34 @@ class Carte
         
         //Score de jeu quand il tape un block
         unsigned int score;
+
+        //bool objet
+        unsigned int objet;
     
     public:
         
         Carte();
-        Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock);
+        Carte(Dimension Dim, Personnage Perso, std::vector<Block> TabBlock, std::vector<Block> TabObjet);
 
         ~Carte();
 
         Dimension getDimCarte() const;
         Personnage getPerso() const;
         Block getBlock(int numBlock)const;
+        Block getObjet(int numObjet)const;
         std::vector<Block> getTabBlock() const;
 
         int getTailleTabBlock() const;
+        int getTailleTabObjet() const;
         int getTailleUtilisee() const;
 
         void remplirTabBlockTxt();
 
         bool blockSurPos(int x, int y)const;
+        bool objetSurPos(unsigned int x,unsigned int y)const;
         void setBlock(int numBlock, Block b);
         void ajouterBlock(Block b);
+        void ajouterObjet(Block o);
 
         void setDimension(Dimension Dimension);
         void setPerso(Personnage Perso);
@@ -58,6 +65,7 @@ class Carte
         void remplirModeFacile(int difficulté);
 
         bool PersoSurBlock();
+        bool PersoSurObjet();
         void actionClavier(const char touche);
 
         void Block_PersoInit1();
@@ -68,6 +76,8 @@ class Carte
         void PersoGravite();
         bool persoSurBlock2();
         bool persoSurBlock3(Block b);
+        bool persoSurObjet2();
+        bool persoSurObjet3(Block o);
         
 
 
@@ -76,8 +86,12 @@ class Carte
 
         void boucleJeu();
         void tout_deplacer();
+        void deplacerBlockmobile();
+        void deplacerObjetmobile();
+        void deplacerSiObjet();
         void viePerdue();
         bool getViePerso();
+
 
         void actionsAutomatiques();
 

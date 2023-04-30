@@ -189,18 +189,27 @@ SDLSimple::SDLSimple () : UneCarte() {
         SDL_Quit(); 
         exit(1);
     }
-    //im_objet.loadFromFile("data/pastille.png",renderer);
+    
+    im_objet.loadFromFile("data/pastille.png",renderer);
+    if (im_objet.getTexture() == nullptr) {
+        im_objet.loadFromFile("..data/pastille.png",renderer);
+    }
+    if (im_objet.getTexture() == nullptr) {
+        cout << "Failed to load block.png! SDL Error: " << SDL_GetError() << endl; 
+        SDL_Quit(); 
+        exit(1);
+    }
 
     // FONTS
-    font = TTF_OpenFont("data/DejaVuSansCondensed.ttf",50);
+    font = TTF_OpenFont("data/HFFFireDancer.ttf",50);
     if (font == nullptr)
-        font = TTF_OpenFont("../data/DejaVuSansCondensed.ttf",50);
+        font = TTF_OpenFont("../data/HFFFireDancer.ttf",50);
     if (font == nullptr) {
-            cout << "Failed to load DejaVuSansCondensed.ttf! SDL_TTF Error: " << TTF_GetError() << endl; 
+            cout << "Failed to load HFFFireDancer.ttf! SDL_TTF Error: " << TTF_GetError() << endl; 
             SDL_Quit(); 
             exit(1);
 	}
-	font_color.r = 50;font_color.g = 50;font_color.b = 255;
+	font_color.r = 250;font_color.g = 60;font_color.b = 60;
 	font_im.setSurface(TTF_RenderText_Solid(font,"doodle jump",font_color));
 	font_im.loadFromCurrentSurface(renderer);
 
@@ -238,15 +247,25 @@ void SDLSimple::sdlAff () {
     const Personnage &PersoAff = UneCarte.getPerso();
     const std::vector <Block> &TabBlock = UneCarte.getTabBlock();
 
+    unsigned int largeur = UneCarte.getDimCarte().getLargeur();
+    unsigned int hauteur = UneCarte.getDimCarte().getHauteur();
+    
     // Affichage des murs et des pastilles
-    for (unsigned int x = 0; x < UneCarte.getDimCarte().getLargeur(); ++x)
-        for (unsigned int y = 0; y < UneCarte.getDimCarte().getHauteur(); ++y)
+    for (unsigned int x = 0; x < largeur; ++x)
+        for (unsigned int y = 0; y < hauteur ; ++y){
             if(UneCarte.blockSurPos(x,y)==true)
             {
                 
                 im_block.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y+1)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
             }
-        
+            if(UneCarte.objetSurPos(x,y)==true)
+            {
+                im_objet.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
+            }
+        }
+            
+    
+
     // Afficher le sprite du personnage
 	im_personnage.draw(renderer,(PersoAff.getPosition().getAbscisse())*TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur() - PersoAff.getPosition().getOrdonnee())*TAILLE_SPRITE,TAILLE_SPRITE,TAILLE_SPRITE);
 
@@ -276,7 +295,11 @@ void SDLSimple::sdlBoucle () {
                 
                 UneCarte.getBlock(i).deplacement(UneCarte.getDimCarte());
             }*/
-            
+            if (UneCarte.getViePerso() == false)
+                    {
+                        quit = true;
+                        SDL_Quit();
+                    }
             
             t = nt;
         }
@@ -307,11 +330,7 @@ void SDLSimple::sdlBoucle () {
                     default: break;
                     }
                     
-                    if (UneCarte.getViePerso() == false)
-                    {
-                        quit = true;
-                        SDL_Quit();
-                    }
+                    
                     
                     if ((withSound) && (mangePastille))
                         Mix_PlayChannel(-1,sound,0);
