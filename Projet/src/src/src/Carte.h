@@ -5,6 +5,10 @@
 
 #include <vector>
 
+/**
+ * @class Carte [Carte.hpp].
+ * @brief 'Carte' Regroupe toutes les caractéristiques d'une carte de jeu (The background of the game).
+*/
 
 class Carte
 {
