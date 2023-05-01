@@ -44,6 +44,7 @@ private :
 
     TTF_Font * font;
     Image font_im;
+    Image font_imScore;
     SDL_Color font_color;
 
     Mix_Chunk * sound;

@@ -67,7 +67,7 @@ void txtBoucle(Carte &UneCarte)
     // Creation d'une nouvelle fenetre en mode texte
     // => fenetre de dimension et position (WIDTH,HEIGHT,STARTX,STARTY)
     WinTXT win(dimcarte.getLargeur()+1, dimcarte.getHauteur()+1);
-    int i=0;
+    
     bool ok = true;
     int c;
 
@@ -79,10 +79,10 @@ void txtBoucle(Carte &UneCarte)
 #ifdef _WIN32
         Sleep(100);
 #else
-        usleep(100000);
+        usleep(300000);
 #endif // WIN32
 
-       //jeu.actionsAutomatiques();
+       UneCarte.boucleJeu();
         
         c = win.getCh();
         switch (c)
@@ -93,19 +93,15 @@ void txtBoucle(Carte &UneCarte)
         case 'e':
             UneCarte.actionClavier('d');
             break;
-        case ' ':
-            do{
-                UneCarte.actionClavier('s');
-                UneCarte.ajouteSaut();
-                i++;
-            }while(i%3!=0);
-            
-            break;
         case 'q':
             ok = false;
             break;
         }
-        
+        if (UneCarte.getViePerso() == false)
+                    {
+                        ok = false;
+                        
+                    }
         
     } while (ok);
 }

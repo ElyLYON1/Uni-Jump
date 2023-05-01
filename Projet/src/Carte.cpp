@@ -33,6 +33,28 @@ Carte::~Carte()
 }
 
 
+Dimension Carte::getDimCarte() const
+{
+    return Carte_Dimension;
+}
+
+Personnage Carte::getPerso() const
+{
+    return Carte_perso;
+}
+
+
+Block Carte::getBlock(int numBlock) const
+{
+    return Carte_TabBlock[numBlock];
+}
+
+std::vector<Block> Carte::getTabBlock() const
+{
+    return std::vector<Block>();
+}
+
+
 
 void Carte::setDimension(Dimension Dim)
 {
@@ -46,119 +68,10 @@ void Carte::setPerso(Personnage Perso)
 {
     Carte_perso=Perso;
 }
-/*
-void Carte::setTabBlock(Block *TabBlock)
-{
-    if(Carte_taille_TabBlock >= sizeof(TabBlock)/sizeof(TabBlock[0]))
-    {
-        Carte_TabBlock = new Block[sizeof(TabBlock) / sizeof(TabBlock[0])];
-    }
- 
-    for (int i = 0; i < Carte_taille_TabBlock; i++)
-    {
-        Carte_TabBlock[i] = TabBlock[i];
-    }
-}
-
-*/
-int Carte::getnbEtage()
-{  
-     return Carte_Dimension.getHauteur()/Carte_perso.getSaut();
-
-}
-
-//Boucle for pour definir l'étage et le while pour remplir l'étage de block et le switch pour definir le type de block
-/*void Carte::remplirModeFacile(int difficulté)
-{
-   for(int i=1;i<=getnbEtage();i++)
-   {
-       int nbBlockEtage = (rand() % 3) + 1;
-
-       do
-       {
-           int TypeBlock = (rand() % 4) + 1;
-           int TailleBlock= (rand() % 2) + 1;
-
-           int abscisse = (rand() % Carte_Dimension.getLargeur());
-           int ordonnee = Carte_perso.getSaut() * i;
-
-
-           // Position aléatoire  en largeur mais toujours sur le même étage (sans chevauchement)
-           if (nbBlockEtage > 1)
-           {
-               Block blockprecedent = Carte_TabBlock.back();
-               Position p(abscisse, ordonnee);
-
-               do
-               {
-
-                   int abscisse = (rand() % Carte_Dimension.getLargeur());
-
-                     p.setAbscisse(abscisse);
-
-               } while (p.getDistanceAbs(blockprecedent.getPosition()) > Carte_Dimension.getLargeur() * (30 / 100)); // Un block double fait 20% de la map donc on prend au dessus  
-
-           
-
-            // Si la valeur aléatoire est 2 c'est un block simple sinon un block double
-            //Le num de l'étage multiplié par la hauteur de chaque saut - 10% du saut pour pouvoir atterir dessus
-               Dimension d(Carte_Dimension.getLargeur() / TailleBlock * 5, i * Carte_perso.getSaut() - Carte_perso.getSaut()/10);
-
-           switch (TypeBlock)
-           {
-
-           case 1:
-           {
-               Block b1(d,p, 1, 1);
-               Carte_TabBlock.push_back(b1);
-
-               break;
-           }
-           case 2:
-           {
-               Block b2(d,p, 1, 0);
-               Carte_TabBlock.push_back(b2);
-
-               break;
-           }
-           case 3:
-           {
-               Block b3(d,p, 0, 1);
-               Carte_TabBlock.push_back(b3);
-
-               break;
-           }
-           case 4:
-           {
-               Block b4(d,p, 0,0);
-               Carte_TabBlock.push_back(b4);
-
-               break;
-           }
-
-            default:
-            {
-
-            Block b1,b2,b3,b4;
-
-            }
 
 
 
-           }
-           }
-           nbBlockEtage--;
 
-
-        } while (nbBlockEtage != 0);
-
-   
-
-
-}
-
-}
-*/
 
 
 bool Carte::PersoSurBlock()
@@ -197,7 +110,7 @@ void Carte::actionClavier (const char touche)
                     Carte_perso.setAbscisse(Carte_Dimension.getLargeur() - 1);
                 }
         
-                //boucleJeu();
+                
 				break;
 		case 'd' :
 				Carte_perso.perso_versDroite();
@@ -206,11 +119,11 @@ void Carte::actionClavier (const char touche)
                     Carte_perso.setAbscisse(0);
                 }
                 
-                //boucleJeu();
+                
 				break;
 		case 's' :
 				
-                //fonction pour faire redesendre le personage
+                
                 
                 
                 if(nbSautmax ==0){
@@ -219,7 +132,7 @@ void Carte::actionClavier (const char touche)
                 }
                 
                     
-                //boucleJeu();
+                
 				break;
 	
     }
@@ -227,6 +140,11 @@ void Carte::actionClavier (const char touche)
 
 unsigned int Carte::getnbSaut() const{
     return nbSautmax;
+}
+
+
+unsigned int Carte::getScore() const{
+    return score;
 }
 
 void Carte::ajouteSaut(){
@@ -248,14 +166,11 @@ bool Carte::persoSurBlock2(){
     {
         if (Carte_TabBlock[k].getPosition().getOrdonnee() == i && Carte_TabBlock[k].getPosition().getAbscisse() == j)
         {
-            //Carte_perso.setAbscisse(Carte_TabBlock[k].getPosition().getAbscisse());
             return true;
         }
     }
     return false;
 }
-
-
 
 bool Carte::persoSurBlock3(Block b){
     unsigned int i = Carte_perso.getPosition().getOrdonnee();
@@ -276,41 +191,50 @@ bool Carte::persoSurBlock3(Block b){
     return false;
 }
 
-
 bool Carte::persoSurObjet2(){
     unsigned int i = Carte_perso.getPosition().getOrdonnee();
     unsigned int j = Carte_perso.getPosition().getAbscisse();
     if(Carte_TabObjet.empty()==false){
         for (long unsigned int k = 0; k < Carte_TabObjet.size(); k++)
         {
-            if (Carte_TabObjet[k].getPosition().getOrdonnee() == i && Carte_TabObjet[k].getPosition().getAbscisse() == j)
-            {
-                //Carte_perso.setAbscisse(Carte_TabBlock[k].getPosition().getAbscisse());
-                return true;
-            }
+            if (Carte_TabObjet[k].getMobile()==false)
+                if (Carte_TabObjet[k].getPosition().getOrdonnee() == i && Carte_TabObjet[k].getPosition().getAbscisse() == j)
+                {
+                    return true;
+                }
+            if (Carte_TabObjet[k].getMobile()==true)
+                if (Carte_TabObjet[k].getPosition().getOrdonnee() == i && Carte_TabObjet[k].getPosition().getAbscisse() == j)
+                {
+                    return true;
+                }
+            if (Carte_TabObjet[k].getMobile()==true)
+                if (Carte_TabObjet[k].getPosition().getOrdonnee() == i && Carte_TabObjet[k].getPosition().getAbscisse() == j-1)
+                {
+                    return true;
+                }
+            if (Carte_TabObjet[k].getMobile()==true)
+                if (Carte_TabObjet[k].getPosition().getOrdonnee() == i && Carte_TabObjet[k].getPosition().getAbscisse() == j+1)
+                {
+                    return true;
+                }
+            
+            
         }
     }
     return false;
 }
 
-bool Carte::persoSurObjet3(Block o){
-    unsigned int i = Carte_perso.getPosition().getOrdonnee();
-    unsigned int j = Carte_perso.getPosition().getAbscisse();
-    if (o.getPosition().getOrdonnee() == i && o.getPosition().getAbscisse() == j)
-    {
-        return true;
-    }
-    if( o.getPosition().getOrdonnee() == i && o.getPosition().getAbscisse() == j-1)
-    {
-        return true;
-    }
-    if (o.getPosition().getOrdonnee() == i && o.getPosition().getAbscisse() == j+1)
-    {
-        return true;
-    }
 
+bool Carte::persoSurBlockGravite(){
+    if (persoSurBlock2() && nbSautmax % (Carte_perso.getSaut() +1) == 0)
+    {
+        return true;
+    }
     return false;
 }
+
+
+
 
 
 //fonction qui place le personage sur le premier block avec ordonnèe 2 dans la carte
@@ -324,6 +248,7 @@ void Carte::Block_PersoInit1()
     ajouterBlock(b);
     nbSautmax = 0;
     objet = 0;
+    score = 0;
 }
 
 //fonction qui place le block sur la carte
@@ -369,31 +294,9 @@ void Carte::Block_Init2()
 
 
 
-
-Dimension Carte::getDimCarte() const
-{
-    return Carte_Dimension;
-}
-
-Personnage Carte::getPerso() const
-{
-    return Carte_perso;
-}
-
-
-Block Carte::getBlock(int numBlock) const
-{
-    return Carte_TabBlock[numBlock];
-}
-
-std::vector<Block> Carte::getTabBlock() const
-{
-    return std::vector<Block>();
-}
-
 int Carte::getTailleTabBlock() const
 {
-  //  sizeof(Carte_TabBlock) / sizeof(Carte_TabBlock[0]);
+ 
     return Carte_TabBlock.size();
 }
 
@@ -402,32 +305,6 @@ int Carte::getTailleTabObjet() const
     return Carte_TabObjet.size();
 }
 
-int Carte::getTailleUtilisee() const
-{
-    if(getTailleTabBlock()!=0)
-{
-    return sizeof(Carte_TabBlock) / sizeof(Carte_TabBlock[0]);
-
-}
-else
-{
-    return 0;
-}
-
-}
-
-/*
-Fonction simplifié du remplissage des blocks pout l'affichage txt
-
-void Carte::remplirTabBlockTxt () 
-{
-    for(int i=1;i<=getnbEtage();i++)
-    {
-        int nbBlockEtage = (rand() % 3) + 1;
-}
-}
-
-*/
 
 bool Carte::blockSurPos(int x ,int y)const
 {
@@ -443,8 +320,6 @@ bool Carte::blockSurPos(int x ,int y)const
              
             
                 return false ;
-            
-
 }
 
 bool Carte::objetSurPos(unsigned int x ,unsigned int y)const
@@ -460,15 +335,9 @@ bool Carte::objetSurPos(unsigned int x ,unsigned int y)const
             {
             return  true;
             }
-
-        }
-             
-            
+        } 
                 return false ;
-            
-
 }
-
 
 
 //fonction qui remplace le block sur la carte
@@ -493,28 +362,7 @@ void Carte::ajouterObjet(Block b)
     Carte_TabObjet.push_back(b);
 }
 
-void Carte::testRegression()
-{
-    Carte c1;
-    Dimension d1(100,100);
-    assert(c1.getDimCarte().getLargeur()==0);
-    assert(c1.getDimCarte().getHauteur()==0);
 
-    assert(c1.getTailleTabBlock()==0);
-    assert(c1.getPerso().getPosition().getAbscisse()==0);
-    assert(c1.getPerso().getPosition().getOrdonnee()==0);
-
-    c1.setDimension(d1);
-    assert(c1.getDimCarte().getLargeur()==100);
-    assert(c1.getDimCarte().getHauteur()==100);
-
-    c1.actionClavier('g');
-    assert(c1.getPerso().getPosition().getAbscisse()==c1.getDimCarte().getLargeur()-1);
-
-    c1.actionClavier('d');
-    assert(c1.getPerso().getPosition().getAbscisse()==1);
-    
-}
 
 
 
@@ -611,15 +459,29 @@ bool Carte::getViePerso(){
 }
 
 
+void Carte::compteurScore(){
+    if (persoSurBlock2()==true && Carte_perso.getPosition().getOrdonnee() != 2){
+        score=score+1;
+    }
+    
+}
+
+
 
 void Carte::boucleJeu(){
-        if (nbSautmax % (Carte_perso.getSaut() +1) == 0){
-            if (persoSurBlock2()==true)
-            {
+        if (persoSurBlockGravite()){
                 tout_deplacer();
                 Block_Init2();
-                //score=score+1;
+                compteurScore();
+            
+        }
+        if (Carte_TabObjet.empty() == false )
+            {
+                deplacerObjetmobile();
+                deplacerSiObjet();
             }
+        if (objet == 1){
+            deplacerSiObjet();
         }    
         if (persoSurBlock2() || nbSautmax % (Carte_perso.getSaut() +1) > 0){
             Carte_perso.perso_sauter();
@@ -633,14 +495,30 @@ void Carte::boucleJeu(){
             }
         }
         deplacerBlockmobile();
-        if (Carte_TabObjet.empty() == false )
-        {
-            deplacerObjetmobile();
-            deplacerSiObjet();
-        }
-    
-    if (objet == 1){
-        deplacerSiObjet();
-    }
+        
     viePerdue();
+}
+
+
+void Carte::testRegression()
+{
+    Carte c1;
+    Dimension d1(100,100);
+    assert(c1.getDimCarte().getLargeur()==0);
+    assert(c1.getDimCarte().getHauteur()==0);
+
+    assert(c1.getTailleTabBlock()==0);
+    assert(c1.getPerso().getPosition().getAbscisse()==0);
+    assert(c1.getPerso().getPosition().getOrdonnee()==0);
+
+    c1.setDimension(d1);
+    assert(c1.getDimCarte().getLargeur()==100);
+    assert(c1.getDimCarte().getHauteur()==100);
+
+    c1.actionClavier('g');
+    assert(c1.getPerso().getPosition().getAbscisse()==c1.getDimCarte().getLargeur()-1);
+
+    c1.actionClavier('d');
+    assert(c1.getPerso().getPosition().getAbscisse()==1);
+    
 }

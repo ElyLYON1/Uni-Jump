@@ -212,6 +212,7 @@ SDLSimple::SDLSimple () : UneCarte() {
 	font_color.r = 250;font_color.g = 60;font_color.b = 60;
 	font_im.setSurface(TTF_RenderText_Solid(font,"doodle jump",font_color));
 	font_im.loadFromCurrentSurface(renderer);
+    
 
 
     // SONS
@@ -260,7 +261,7 @@ void SDLSimple::sdlAff () {
             }
             if(UneCarte.objetSurPos(x,y)==true)
             {
-                im_objet.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y)*TAILLE_SPRITE-1,TAILLE_SPRITE,TAILLE_SPRITE/3);
+                im_objet.draw(renderer,x * TAILLE_SPRITE,(UneCarte.getDimCarte().getHauteur()-y+1)*TAILLE_SPRITE-1,TAILLE_SPRITE/3,TAILLE_SPRITE/3);
             }
         }
             
@@ -274,6 +275,16 @@ void SDLSimple::sdlAff () {
     SDL_Rect positionTitre;
     positionTitre.x = (UneCarte.getDimCarte().getLargeur()-3)*TAILLE_SPRITE/2;positionTitre.y = 49;positionTitre.w = 100;positionTitre.h = 30;
     SDL_RenderCopy(renderer,font_im.getTexture(),nullptr,&positionTitre);
+
+    std::string scoreStr = "Score: " + std::to_string(UneCarte.getScore());
+    font_imScore.setSurface(TTF_RenderText_Solid(font, scoreStr.c_str(), font_color));
+    font_imScore.loadFromCurrentSurface(renderer);
+
+    // Ecrire le score
+    SDL_Rect positionScore;
+    positionScore.x = 0;positionScore.y = 0;positionScore.w = 100;positionScore.h = 30;
+    SDL_RenderCopy(renderer,font_imScore.getTexture(),nullptr,&positionScore);
+
 
 }
 
@@ -304,14 +315,15 @@ void SDLSimple::sdlBoucle () {
             t = nt;
         }
     
-        
+        if ((withSound) && UneCarte.persoSurBlockGravite())
+            Mix_PlayChannel(-1,sound,0);
          
         
 		// tant qu'il y a des évenements à traiter (cette boucle n'est pas bloquante)
 		while (SDL_PollEvent(&events)) {
 			if (events.type == SDL_QUIT) quit = true;           // Si l'utilisateur a clique sur la croix de fermeture
 			else if (events.type == SDL_KEYDOWN) {              // Si une touche est enfoncee
-        bool mangePastille = false;
+        
                     switch (events.key.keysym.scancode) {
                     case SDL_SCANCODE_LEFT:
                         UneCarte.actionClavier('g');
@@ -332,8 +344,7 @@ void SDLSimple::sdlBoucle () {
                     
                     
                     
-                    if ((withSound) && (mangePastille))
-                        Mix_PlayChannel(-1,sound,0);
+                    
                 }
 		    }
 
