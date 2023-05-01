@@ -210,7 +210,7 @@ SDLSimple::SDLSimple () : UneCarte() {
             exit(1);
 	}
 	font_color.r = 250;font_color.g = 60;font_color.b = 60;
-	font_im.setSurface(TTF_RenderText_Solid(font,"doodle jump",font_color));
+	font_im.setSurface(TTF_RenderText_Solid(font,"UNI-JUMP",font_color));
 	font_im.loadFromCurrentSurface(renderer);
     
 
